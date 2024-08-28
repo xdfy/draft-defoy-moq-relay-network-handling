@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>MOQ Relays for Support of High-Throughput Low-Latency Traffic in 5G</title>
+<meta content="Xavier de Foy" name="author">
+<meta content="Renan Krishna" name="author">
+<meta content="Tianji Jiang" name="author">
+<meta content="
+       This document describes a mechanism to convey information about media frames. The information is used for specific handling in functions such as error recovery and congestion handling. These functions can be critical to improve energy efficiency and network capacity in some (especially wireless) networks. Due to end-to-end encryption, MOQ relays are expected to extract the metadata required by these functions. This document aims to enable a level of wireless network support for MOQ equivalent to what is possible for RTP. 
+    " name="description">
+<meta content="xml2rfc 3.23.0" name="generator">
+<meta content="draft-defoy-moq-relay-network-handling-02" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.23.0
+    Python 3.10.12
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.0
+    intervaltree 3.1.0
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.2.2
+    pycountry 24.6.1
+    pydyf 0.10.0
+    PyYAML 6.0.2
+    requests 2.32.3
+    setuptools 59.6.0
+    wcwidth 0.2.13
+    weasyprint 61.2
+-->
+<link href="/usr/src/app/tmp/72261f82-3255-442e-bcb9-cf752944461e/draft-defoy-moq-relay-network-handling-02.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">/*
+
+  NOTE: Changes at the bottom of this file overrides some earlier settings.
+
+  Once the style has stabilized and has been adopted as an official RFC style,
+  this can be consolidated so that style settings occur only in one place, but
+  for now the contents of this file consists first of the initial CSS work as
+  provided to the RFC Formatter (xml2rfc) work, followed by itemized and
+  commented changes found necessary during the development of the v3
+  formatters.
+
+*/
+
+/* fonts */
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans'); /* Sans-serif */
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif'); /* Serif (print) */
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); /* Monospace */
+
+:root {
+  --font-sans: 'Noto Sans', Arial, Helvetica, sans-serif;
+  --font-serif: 'Noto Serif', 'Times', 'Times New Roman', serif;
+  --font-mono: 'Roboto Mono', Courier, 'Courier New', monospace;
+}
+
+@viewport {
+  zoom: 1.0;
+}
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+/* general and mobile first */
+html {
+}
+body {
+  max-width: 90%;
+  margin: 1.5em auto;
+  color: #222;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+  overflow-wrap: break-word;
+}
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  margin: 1em 0 0.5em;
+  font-weight: bold;
+  line-height: 1.3;
+}
+#title {
+  clear: both;
+  border-bottom: 1px solid #ddd;
+  margin: 0 0 0.5em 0;
+  padding: 1em 0 0.5em;
+}
+.author {
+  padding-bottom: 4px;
+}
+h1 {
+  font-size: 26px;
+  margin: 1em 0;
+}
+h2 {
+  font-size: 22px;
+  margin-top: -20px;  /* provide offset for in-page anchors */
+  padding-top: 33px;
+}
+h3 {
+  font-size: 18px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h4 {
+  font-size: 16px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h5, h6 {
+  font-size: 14px;
+}
+#n-copyright-notice {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+}
+/* general structure */
+p {
+  padding: 0;
+  margin: 0 0 1em 0;
+  text-align: left;
+}
+div, span {
+  position: relative;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+svg[font-family~="serif" i], svg [font-family~="serif" i] {
+  font-family: var(--font-serif);
+}
+svg[font-family~="sans-serif" i], svg [font-family~="sans-serif" i] {
+  font-family: var(--font-sans);
+}
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  display: table;
+  border: none;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 1em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.ulBare, li.ulBare {
+  margin-left: 0em !important;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+/* 
+dl.nohang > dt {
+  float: none;
+}
+*/
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+/* links */
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #22e; /* Arlen: WCAG 2019 */
+}
+a[href]:hover {
+  background-color: #f2f2f2;
+}
+figcaption a[href],
+a[href].selfRef {
+  color: #222;
+}
+/* XXX probably not this:
+a.selfRef:hover {
+  background-color: transparent;
+  cursor: default;
+} */
+
+/* Figures */
+tt, code, pre {
+  background-color: #f9f9f9;
+  font-family: var(--font-mono);
+}
+pre {
+  border: 1px solid #eee;
+  margin: 0;
+  padding: 1em;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption {
+  font-style: italic;
+  margin: 0 0 1em 0;
+}
+@media screen {
+  pre {
+    overflow-x: auto;
+    max-width: 100%;
+    max-width: calc(100% - 22px);
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 1.2em 2em;
+}
+blockquote {
+  background-color: #f9f9f9;
+  color: #111; /* Arlen: WCAG 2019 */
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin: 1em 0;
+}
+blockquote > *:last-child {
+  margin-bottom: 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+.xref {
+  overflow-wrap: normal;
+}
+
+/* tables */
+table {
+  width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+  border: 1px solid #eee;
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em 0.75em;
+}
+th {
+  text-align: left;
+  background-color: #e9e9e9;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f5f5f5;
+}
+table caption {
+  font-style: italic;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+table p {
+  /* XXX to avoid bottom margin on table row signifiers. If paragraphs should
+     be allowed within tables more generally, it would be far better to select on a class. */
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  color: #666; /* Arlen: AHDJ 2019 */
+  text-decoration: none;
+  visibility: hidden;
+  user-select: none;
+  -ms-user-select: none;
+  -o-user-select:none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+@media screen {
+  aside:hover > a.pilcrow,
+  p:hover > a.pilcrow,
+  blockquote:hover > a.pilcrow,
+  div:hover > a.pilcrow,
+  li:hover > a.pilcrow,
+  pre:hover > a.pilcrow {
+    visibility: visible;
+  }
+  a.pilcrow:hover {
+    background-color: transparent;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: 0.9em;
+}
+#identifiers dt {
+  width: 3em;
+  clear: left;
+}
+#identifiers dd {
+  float: left;
+  margin-bottom: 0;
+}
+/* Fix PDF info block run off issue */
+@media print {
+  #identifiers dd {
+    float: none;
+  }
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #666; /* Arlen: WCAG 2019 */
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc  {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+nav.toc ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+nav.toc li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.refSubseries {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 600px) {
+  .index ul {
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+  }
+  .index ul ul {
+    -moz-column-count: 1;
+    -moz-column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  font-family: var(--font-sans);
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+
+/* temporary notes */
+.rfcEditorRemove::before {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  padding: 0.2em;
+  content: "The RFC Editor will remove this note";
+  color: #9e2a00; /* Arlen: WCAG 2019 */
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+}
+.rfcEditorRemove {
+  position: relative;
+  padding-top: 1.8em;
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  border-radius: 3px;
+}
+.cref {
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 1023px) {
+  body {
+    padding-top: 2em;
+  }
+  #title {
+    padding: 1em 0;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+    margin-top: -18px;  /* provide offset for in-page anchors */
+    padding-top: 38px;
+  }
+  #identifiers dd {
+    max-width: 60%;
+  }
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    background-color: inherit;
+    border-bottom: 1px solid #ccc;
+  }
+  #toc h2 {
+    margin: -1px 0 0 0;
+    padding: 4px 0 4px 6px;
+    padding-right: 1em;
+    min-width: 190px;
+    font-size: 1.1em;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 6px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 1024px) {
+  body {
+    max-width: 724px;
+    margin: 42px auto;
+    padding-left: 1.5em;
+    padding-right: 29em;
+  }
+  #toc {
+    position: fixed;
+    top: 42px;
+    right: 42px;
+    width: 25%;
+    margin: 0;
+    padding: 0 1em;
+    z-index: 1;
+  }
+  #toc h2 {
+    border-top: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 0;
+    overflow: auto;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  .breakable pre {
+    break-inside: auto;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+/* This is commented out here, as the string-set: doesn't
+   pass W3C validation currently */
+/*
+.ears thead .left {
+  string-set: ears-top-left content();
+}
+
+.ears thead .center {
+  string-set: ears-top-center content();
+}
+
+.ears thead .right {
+  string-set: ears-top-right content();
+}
+
+.ears tfoot .left {
+  string-set: ears-bottom-left content();
+}
+
+.ears tfoot .center {
+  string-set: ears-bottom-center content();
+}
+
+.ears tfoot .right {
+  string-set: ears-bottom-right content();
+}
+*/
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+  /* The following is commented out here, but set appropriately by in code, as
+     the content depends on the document */
+  /*
+  @top-left {
+    content: 'Internet-Draft';
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-left {
+    content: string(ears-top-left);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-center {
+    content: string(ears-top-center);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-right {
+    content: string(ears-top-right);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @bottom-left {
+    content: string(ears-bottom-left);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-center {
+    content: string(ears-bottom-center);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-right {
+      content: '[Page ' counter(page) ']';
+      vertical-align: top;
+      border-top: solid 1px #ccc;
+  }
+  */
+
+}
+
+/* Changes introduced to fix issues found during implementation */
+/* Make sure links are clickable even if overlapped by following H* */
+a {
+  z-index: 2;
+}
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Leave room in document info to show Internet-Draft on one line */
+#identifiers dt {
+  width: 8em;
+}
+
+/* Don't waste quite as much whitespace between label and value in doc info */
+#identifiers dd {
+  margin-left: 1em;
+}
+
+/* Give floating toc a background color (needed when it's a div inside section */
+#toc {
+  background-color: white;
+}
+
+/* Make the collapsed ToC header render white on gray also when it's a link */
+@media screen and (max-width: 1023px) {
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+}
+
+/* Give the bottom of the ToC some whitespace */
+@media screen and (min-width: 1024px) {
+  #toc {
+    padding: 0 0 1em 1em;
+  }
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* prevent monospace from becoming overly large */
+tt, code, pre {
+  font-size: 95%;
+}
+
+/* Fix the height/width aspect for ascii art*/
+.sourcecode pre,
+.art-text pre {
+  line-height: 1.12;
+}
+
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin-right: 0.5em;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table td.text-left,
+table th.text-left {
+  text-align: left;
+}
+table td.text-center,
+table th.text-center {
+  text-align: center;
+}
+table td.text-right,
+table th.text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 30em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Provide table alignment support.  We can't use the alignX classes above
+   since they do unwanted things with caption and other styling. */
+table.right {
+ margin-left: auto;
+ margin-right: 0;
+}
+table.center {
+ margin-left: auto;
+ margin-right: auto;
+}
+table.left {
+ margin-left: 0;
+ margin-right: auto;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+caption a[href] {
+  color: #222;
+}
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+/* Tweak the invisible space above H* in order not to overlay links in text above */
+ h2 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 31px;
+ }
+ h3 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+ h4 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+/* Float artwork pilcrow to the right */
+@media screen {
+  .artwork a.pilcrow {
+    display: block;
+    line-height: 0.7;
+    margin-top: 0.15em;
+  }
+}
+/* Make pilcrows on dd visible */
+@media screen {
+  dd:hover > a.pilcrow {
+    visibility: visible;
+  }
+}
+/* Make the placement of figcaption match that of a table's caption
+   by removing the figure's added bottom margin */
+.alignLeft.art-text,
+.alignCenter.art-text,
+.alignRight.art-text {
+   margin-bottom: 0;
+}
+.alignLeft,
+.alignCenter,
+.alignRight {
+  margin: 1em 0 0 0;
+}
+/* In print, the pilcrow won't show on hover, so prevent it from taking up space,
+   possibly even requiring a new line */
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+/* Styling for the external metadata */
+div#external-metadata {
+  background-color: #eee;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  display: none;
+}
+div#internal-metadata {
+  padding: 0.5em;                       /* to match the external-metadata padding */
+}
+/* Styling for title RFC Number */
+h1#rfcnum {
+  clear: both;
+  margin: 0 0 -1em;
+  padding: 1em 0 0 0;
+}
+/* Make .olPercent look the same as <ol><li> */
+dl.olPercent > dd {
+  margin-bottom: 0.25em;
+  min-height: initial;
+}
+/* Give aside some styling to set it apart */
+aside {
+  border-left: 1px solid #ddd;
+  margin: 1em 0 1em 2em;
+  padding: 0.2em 2em;
+}
+aside > dl,
+aside > ol,
+aside > ul,
+aside > table,
+aside > p {
+  margin-bottom: 0.5em;
+}
+/* Additional page break settings */
+@media print {
+  figcaption, table caption {
+    page-break-before: avoid;
+  }
+}
+/* Font size adjustments for print */
+@media print {
+  body  { font-size: 10pt;      line-height: normal; max-width: 96%; }
+  h1    { font-size: 1.72em;    padding-top: 1.5em; } /* 1*1.2*1.2*1.2 */
+  h2    { font-size: 1.44em;    padding-top: 1.5em; } /* 1*1.2*1.2 */
+  h3    { font-size: 1.2em;     padding-top: 1.5em; } /* 1*1.2 */
+  h4    { font-size: 1em;       padding-top: 1.5em; }
+  h5, h6 { font-size: 1em;      margin: initial; padding: 0.5em 0 0.3em; }
+}
+/* Sourcecode margin in print, when there's no pilcrow */
+@media print {
+  .artwork,
+  .artwork > pre,
+  .sourcecode {
+    margin-bottom: 1em;
+  }
+}
+/* Avoid narrow tables forcing too narrow table captions, which may render badly */
+table {
+  min-width: 20em;
+}
+/* ol type a */
+ol.type-a { list-style-type: lower-alpha; }
+ol.type-A { list-style-type: upper-alpha; }
+ol.type-i { list-style-type: lower-roman; }
+ol.type-I { list-style-type: upper-roman; }
+/* Apply the print table and row borders in general, on request from the RPC,
+and increase the contrast between border and odd row background slightly */
+table {
+  border: 1px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+}
+tr {
+  break-inside: avoid;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f8f8f8;
+}
+/* Use style rules to govern display of the TOC. */
+@media screen and (max-width: 1023px) {
+  #toc nav { display: none; }
+  #toc.active nav { display: block; }
+}
+/* Add support for keepWithNext */
+.keepWithNext {
+  break-after: avoid-page;
+  break-after: avoid-page;
+}
+/* Add support for keepWithPrevious */
+.keepWithPrevious {
+  break-before: avoid-page;
+}
+/* Change the approach to avoiding breaks inside artwork etc. */
+figure, pre, table, .artwork, .sourcecode  {
+  break-before: auto;
+  break-after: auto;
+}
+/* Avoid breaks between <dt> and <dd> */
+dl {
+  break-before: auto;
+  break-inside: auto;
+}
+dt {
+  break-before: auto;
+  break-after: avoid-page;
+}
+dd {
+  break-before: avoid-page;
+  break-after: auto;
+  orphans: 3;
+  widows: 3
+}
+span.break, dd.break {
+  margin-bottom: 0;
+  min-height: 0;
+  break-before: auto;
+  break-inside: auto;
+  break-after: auto;
+}
+/* Undo break-before ToC */
+@media print {
+  #toc {
+    break-before: auto;
+  }
+}
+/* Text in compact lists should not get extra bottom margin space,
+   since that would makes the list not compact */
+ul.compact p, .ulCompact p,
+ol.compact p, .olCompact p {
+ margin: 0;
+}
+/* But the list as a whole needs the extra space at the end */
+section ul.compact,
+section .ulCompact,
+section ol.compact,
+section .olCompact {
+  margin-bottom: 1em;                    /* same as p not within ul.compact etc. */
+}
+/* The tt and code background above interferes with for instance table cell
+   backgrounds.  Changed to something a bit more selective. */
+tt, code {
+  background-color: transparent;
+}
+p tt, p code, li tt, li code, dt tt, dt code {
+  background-color: #f8f8f8;
+}
+/* Tweak the pre margin -- 0px doesn't come out well */
+pre {
+   margin-top: 0.5px;
+}
+/* Tweak the compact list text */
+ul.compact, .ulCompact,
+ol.compact, .olCompact,
+dl.compact, .dlCompact {
+  line-height: normal;
+}
+/* Don't add top margin for nested lists */
+li > ul, li > ol, li > dl,
+dd > ul, dd > ol, dd > dl,
+dl > dd > dl {
+  margin-top: initial;
+}
+/* Elements that should not be rendered on the same line as a <dt> */
+/* This should match the element list in writer.text.TextWriter.render_dl() */
+dd > div.artwork:first-child,
+dd > aside:first-child,
+dd > figure:first-child,
+dd > ol:first-child,
+dd > div.sourcecode:first-child,
+dd > table:first-child,
+dd > ul:first-child {
+  clear: left;
+}
+/* fix for weird browser behaviour when <dd/> is empty */
+dt+dd:empty::before{
+  content: "\00a0";
+}
+/* Make paragraph spacing inside <li> smaller than in body text, to fit better within the list */
+li > p {
+  margin-bottom: 0.5em
+}
+/* Don't let p margin spill out from inside list items */
+li > p:last-of-type:only-child {
+  margin-bottom: 0;
+}
+</style>
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
+<script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
+</head>
+<body class="xml2rfc">
+<script src="metadata.min.js"></script>
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">MOQ-EXT-NET-HANDLING</td>
+<td class="right">August 2024</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">de Foy, et al.</td>
+<td class="center">Expires 1 March 2025</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">MOQ</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-defoy-moq-relay-network-handling-02</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2024-08-28" class="published">28 August 2024</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2025-03-01">1 March 2025</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">X. de Foy</div>
+<div class="org">InterDigital</div>
+</div>
+<div class="author">
+      <div class="author-name">R. Krishna</div>
+<div class="org">InterDigital</div>
+</div>
+<div class="author">
+      <div class="author-name">T. Jiang</div>
+<div class="org">China Mobile</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">MOQ Relays for Support of High-Throughput Low-Latency Traffic in 5G</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This document describes a mechanism to convey information about media frames. The information is used for specific handling in functions such as error recovery and congestion handling. These functions can be critical to improve energy efficiency and network capacity in some (especially wireless) networks. Due to end-to-end encryption, MOQ relays are expected to extract the metadata required by these functions. This document aims to enable a level of wireless network support for MOQ equivalent to what is possible for RTP.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 1 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2024 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-techniques-used-by-wireless" class="internal xref">Techniques used by Wireless Networks for XR Traffic</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
+                <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-identifying-xr-metadata-in-" class="internal xref">Identifying XR Metadata in RTP Media Flows</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.3">
+                <p id="section-toc.1-1.1.2.3.1" class="keepWithNext"><a href="#section-1.3" class="auto internal xref">1.3</a>.  <a href="#name-identifying-xr-metadata-in-m" class="internal xref">Identifying XR Metadata in MOQ flows</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-xr-metadata-for-5g" class="internal xref">XR Metadata for 5G</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-list-of-currently-defined-x" class="internal xref">List of Currently Defined XR Metadata</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-applying-xr-metadata-to-moq" class="internal xref">Applying XR Metadata to MOQ</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-moq-datagram-xr-metadata" class="internal xref">MOQ Datagram XR Metadata</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.2">
+                    <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="auto internal xref">2.2.2</a>.  <a href="#name-moq-stream-xr-metadata" class="internal xref">MOQ Stream XR Metadata</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-traffic-handling-of-high-th" class="internal xref">Traffic Handling of High-Throughput Low-Latency Traffic</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-moq-relay-behavior" class="internal xref">MOQ Relay Behavior</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-endpoint-behavior" class="internal xref">Endpoint Behavior</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-xr-rtp-header-extension-for" class="internal xref">XR RTP Header Extension for XR Traffic Handling in 5G Networks</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-release-18-xr-metadata" class="internal xref">Release 18 XR Metadata</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-release-19-xr-metadata" class="internal xref">Release 19 XR Metadata</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">Wireless networks can be a challenging environment for applications with high-throughput and low latency requirements, such as video conferencing and Extended Reality (XR, presented for example in <span>[<a href="#I-D.draft-ietf-mops-ar-use-case" class="cite xref">I-D.draft-ietf-mops-ar-use-case</a>]</span>). Wireless networks implement techniques to improve network capacity and energy efficiency, as well as reduce the impact of packet losses on users' quality of experience (<a href="#intro-1-1" class="auto internal xref">Section 1.1</a>). An extension to the RTP protocol has been defined, which enables metadata associated with application data units to be identified at the ingress point of the wireless network (<a href="#intro-1-2" class="auto internal xref">Section 1.2</a>). To enable a similar operation with the MoQ protocol <span>[<a href="#I-D.draft-ietf-moq-transport" class="cite xref">I-D.draft-ietf-moq-transport</a>]</span>, this document describes how a MOQ relay can be used at the ingress point of the wireless network (<a href="#intro-1-3" class="auto internal xref">Section 1.3</a>).<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">The rest of this document is structured as follows:<a href="#section-1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-3.1">
+          <p id="section-1-3.1.1"><a href="#_section-xr-metadata" class="auto internal xref">Section 2</a> describes XR metadata for MoQ, based on what is currently defined by 3GPP for RTP.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-3.2">
+          <p id="section-1-3.2.1"><a href="#_section-xr-handling" class="auto internal xref">Section 3</a> describes the behavior of the MOQ relay and of MOQ endpoints.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-3.3">
+          <p id="section-1-3.3.1"><a href="#_section-sec" class="auto internal xref">Section 4</a> describes applicable security considerations.<a href="#section-1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<div id="intro-1-1">
+<section id="section-1.1">
+        <h3 id="name-techniques-used-by-wireless">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-techniques-used-by-wireless" class="section-name selfRef">Techniques used by Wireless Networks for XR Traffic</a>
+        </h3>
+<p id="section-1.1-1">The network can handle groups of packets based on how critical they are to the user's experience. Some groups of data packets hold application data units that are handled (e.g., decoded) together by the application. 3GPP defines the term "PDU set" to identify these groups of data packets carrying the payload of an application data unit <span>[<a href="#TS23.501" class="cite xref">TS23.501</a>]</span>, which can correspond to the data packets of an application layer data unit. The handling of application data units by the application can depend on other application data units (e.g., in the case of decoding dependency).
+The wireless network performs differentiated handling of groups of data packets. For example, it prioritizes some groups over others in case of congestion. In congestion situations, the network can also selectively drop data packets that depend on an already lost data packets. Furthermore, the network can limit the amount of time that the radio needs to stay awake to transmit and receive data. To achieve this this, the scheduler can use information on the size and periodicity of traffic, as well as delay budget and maximum tolerable jitter specific to the application.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="intro-1-2">
+<section id="section-1.2">
+        <h3 id="name-identifying-xr-metadata-in-">
+<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-identifying-xr-metadata-in-" class="section-name selfRef">Identifying XR Metadata in RTP Media Flows</a>
+        </h3>
+<p id="section-1.2-1">To perform differentiated handling of PDU sets, a network node (typically a User Plane Function, UPF) at the ingress point of a wireless network identifies PDU set metadata from a downlink media flow. 3GPP has developed an RTP header extension for XR traffic for this purpose (see Appendix A for details). When receiving a downlink packet, the UPF reads the XR metadata fields from the RTP header extension and transmits them to the RAN node in the GTP header that encapsulates the packet. The RAN node uses the XR metadata information to implement the differentiated handling described in <a href="#intro-1-1" class="auto internal xref">Section 1.1</a>.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="intro-1-3">
+<section id="section-1.3">
+        <h3 id="name-identifying-xr-metadata-in-m">
+<a href="#section-1.3" class="section-number selfRef">1.3. </a><a href="#name-identifying-xr-metadata-in-m" class="section-name selfRef">Identifying XR Metadata in MOQ flows</a>
+        </h3>
+<p id="section-1.3-1">For XR media traffic transported over the MOQ protocol, the UPF cannot access XR metadata unless it is exposed to the UPF in some fashion. This document describes how the UPF can act as, or communicate with, a MOQ relay to obtain XR metadata associated with media data. To enable this behavior, it is also necessary for the media sender to identify application data units that correspond to different desired traffic handling (e.g., different layers within a media frame), and provide associated metadata. <a href="#_figure-relay" class="auto internal xref">Figure 1</a> describes a UPF with a MOQ relay functionality, identifying XR metadata and transmitting it to access nodes, for example, for a media stream sent by B towards A and C. For privacy and security, it is desirable that the MOQ relay, which can be operated by a network or service operator, does not have access to media data. For interoperability, it is also desirable for these mechanisms to not be codec-specific.<a href="#section-1.3-1" class="pilcrow">¶</a></p>
+<span id="name-traffic-handling-by-access-"></span><div id="_figure-relay">
+<figure id="figure-1">
+          <div class="alignLeft art-text artwork" id="section-1.3-2.1">
+<pre>
+  +---+  +-----------+            +-----------+
+  | A |&lt;-|Access Node|------------|           |
+  +---+  |           |&lt;-metadata--|           |            +---+
+         +-----------+            |    UPF    |&lt;--data+md--| B |
+                                  | MOQ Relay |            +---+
+         +-----------+            |           |
+  +---+  |           |&lt;-metadata--|           |
+  | C |&lt;-|Access Node|------------|           |
+  +---+  +-----------+            +-----------+
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-traffic-handling-by-access-" class="selfRef">Traffic Handling by Access Networks using a MOQ Relay.</a>
+          </figcaption></figure>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="_section-xr-metadata">
+<section id="section-2">
+      <h2 id="name-xr-metadata-for-5g">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-xr-metadata-for-5g" class="section-name selfRef">XR Metadata for 5G</a>
+      </h2>
+<div id="list-of-currently-defined-xr-metadata">
+<section id="section-2.1">
+        <h3 id="name-list-of-currently-defined-x">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-list-of-currently-defined-x" class="section-name selfRef">List of Currently Defined XR Metadata</a>
+        </h3>
+<p id="section-2.1-1">XR metadata applies to IP packets from the 5G system standpoint. Some metadata is the same for a group of IP packets (the PDU set), while some metadata varies per IP packet within the group. Some metadata relates to a data burst, which may consist of one or more PDU sets sent together as one burst of data.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">3GPP defines metadata used for XR traffic handling:<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.1-3.1">
+            <p id="section-2.1-3.1.1">In the 3GPP release 18 (RTP header extension for PDU set marking, <span>[<a href="#TS26.522" class="cite xref">TS26.522</a>]</span>)<a href="#section-2.1-3.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.1-3.1.2.1">
+                <p id="section-2.1-3.1.2.1.1">The <em>PDU Set Importance</em> (PSI, 4 bits) is the importance of this PDU Set compared to other PDU Sets within the same Multimedia Session.<a href="#section-2.1-3.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1-3.1.2.2">
+                <p id="section-2.1-3.1.2.2.1">The <em>end PDU of PDU set</em> (E, 1 bit) indicates the last PDU of the PDU set.<a href="#section-2.1-3.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1-3.1.2.3">
+                <p id="section-2.1-3.1.2.3.1">The <em>end of data burst</em> (D, 1 bit) indicates the last PDU of a data burst.<a href="#section-2.1-3.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1-3.1.2.4">
+                <p id="section-2.1-3.1.2.4.1">The <em>PDU set sequence number</em> (PSSN, 10 bits) identifies the PDU set. The PSSN is incremented monotonically by 1 for each subsequent PDU set.<a href="#section-2.1-3.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1-3.1.2.5">
+                <p id="section-2.1-3.1.2.5.1">The <em>PDU Sequence Number within a PDU Set</em> (PSN, 6 bits) identifies a PDU with the PDU set, starting from 0 and incremented monotonically for every PDU in the PDU set in the order of transmission from the sender.<a href="#section-2.1-3.1.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1-3.1.2.6">
+                <p id="section-2.1-3.1.2.6.1">The <em>PDU set size</em> (PSSize, 24 bits) is an optional field which indicates the total size, in bytes, of all PDUs of the PDU Set (including IP header and IP payload).<a href="#section-2.1-3.1.2.6.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1-3.1.2.7">
+                <p id="section-2.1-3.1.2.7.1">The <em>number of PDUs in the PDU Set</em> (NPDS, 16 bits) is an optional field which indicates the number of PDUs in the same PDU set.<a href="#section-2.1-3.1.2.7.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-2.1-3.2">
+            <p id="section-2.1-3.2.1">In the 3GPP release 19 (work in progress, in normative stage based on the conclusion of <span>[<a href="#TR23.700-70" class="cite xref">TR23.700-70</a>]</span>)<a href="#section-2.1-3.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.1-3.2.2.1">
+                <p id="section-2.1-3.2.2.1.1">The <em>Burst Size</em> (BSize) describes the size of a burst of traffic, which includes one or more PDU sets.<a href="#section-2.1-3.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1-3.2.2.2">
+                <p id="section-2.1-3.2.2.2.1">The <em>Time to Next Burst</em> (TTNB) describes the time between the end of the present burst and the beginning of the next burst.<a href="#section-2.1-3.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+        </ul>
+<p id="section-2.1-4">The optional RTP header extension fields are included subjects to an SDP signaling offer/answer negotiation.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="applying-xr-metadata-to-moq">
+<section id="section-2.2">
+        <h3 id="name-applying-xr-metadata-to-moq">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-applying-xr-metadata-to-moq" class="section-name selfRef">Applying XR Metadata to MOQ</a>
+        </h3>
+<p id="section-2.2-1">Question #1: Should XR metadata for MOQ be worked on at the IETF or in 3GPP SA4 (like the RTP header extension work)? For now, the authors are considering the following approach:<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2-2.1">
+            <p id="section-2.2-2.1.1">Define XR metadata for MOQ within the IETF MOQ WG, since the MOQ protocol is still in development and some questions (like extension mechanisms) can be best addressed by the protocol designers.<a href="#section-2.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.2-2.2">
+            <p id="section-2.2-2.2.1">To limit the need for 3GPP-specific expertise, restrict the initial definition of XR metadata for MOQ to what has been defined by 3GPP for RTP, in Release 18 <span>[<a href="#TS26.522" class="cite xref">TS26.522</a>]</span>, and in Release 19 (assuming the Release 19 work will be completed by the time this draft is finalized).<a href="#section-2.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-2.2-3">Question #2: Should XR metadata be inferred from existing MOQ metadata or should XR metadata be explicit? For now, the authors are considering the following approach:<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2-4.1">
+            <p id="section-2.2-4.1.1">Derive XR metadata if there is no practical way to signal it explicitly in MOQ (e.g., E and PSN in stream mode).<a href="#section-2.2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.2-4.2">
+            <p id="section-2.2-4.2.1">Use explicit metadata in other cases, to associate metadata with a stream or datagram.<a href="#section-2.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.2-4.3">
+            <p id="section-2.2-4.3.1">Based on discussions in the MOQ WG, if a XR metadata field is determined to be exactly equivalent to an existing MOQ metadata field, in all use cases, then the equivalent existing MOQ metadata field will be preferred.<a href="#section-2.2-4.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-2.2-5">Our rationale for proposing this approach to question #2 includes:<a href="#section-2.2-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2-6.1">
+            <p id="section-2.2-6.1.1">Metadata generation tools for the RTP header extension for XR can be reused to generate XR metadata for MOQ.<a href="#section-2.2-6.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.2-6.2">
+            <p id="section-2.2-6.2.1">It keeps XR metadata generation independent from the management of MOQ signaling, which reduces the risks for side effects and the need for heuristics in the MOQ relay to avoid those side effects. Future design evolutions of MOQ would also need to take into account its usage in 5G for XR.<a href="#section-2.2-6.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2-6.2.2.1">
+                <p id="section-2.2-6.2.2.1.1">For example, in datagram mode, the boundaries of a PDU set may be an object (which would be the default heuristic choice) but it could also be a group. Reusing MOQ object ID as PSSN for example, may not work in all cases.<a href="#section-2.2-6.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.2-6.2.2.2">
+                <p id="section-2.2-6.2.2.2.1">In another example, the priority in MOQ may or may not always align with PDU set importance, because the priority is for the application layer while the importance is for differentiated QoS handling in the network.<a href="#section-2.2-6.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-2.2-6.3">
+            <p id="section-2.2-6.3.1">Explicitly packaging XR metadata in MOQ can also simplify processing, since the suitability of a MOQ session for XR handling can be easily determined, based on the presence of explicit XR metadata.<a href="#section-2.2-6.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.2-6.4">
+            <p id="section-2.2-6.4.1">Some XR metadata is not covered by MOQ metadata today (e.g., BSize, TTNB) and needs to be explicit.<a href="#section-2.2-6.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.2-6.5">
+            <p id="section-2.2-6.5.1">Using explicit signalling, the sender can determine which part of the data flow is in a PDU set, and which part is not in a PDU set.<a href="#section-2.2-6.5.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2-6.5.2.1">
+                <p id="section-2.2-6.5.2.1.1">For example, in a QUIC session that includes MOQ XR streams and other streams, control or other application traffic, the sender can explicitly mark the MOQ XR streams with XR metadata.<a href="#section-2.2-6.5.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-2.2-6.6">
+            <p id="section-2.2-6.6.1">Finally, XR metadata can be extended or modified from one 3GPP release to the next, and explicit versions of XR metadata for MOQ can be defined in sync with the RTP header extension for XR, independently from other MOQ protocol aspects.<a href="#section-2.2-6.6.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<div id="moq-datagram-xr-metadata">
+<section id="section-2.2.1">
+          <h4 id="name-moq-datagram-xr-metadata">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-moq-datagram-xr-metadata" class="section-name selfRef">MOQ Datagram XR Metadata</a>
+          </h4>
+<p id="section-2.2.1-1">When using MOQ in datagram mode, XR metadata is sent per datagram, since datagrams can be lost, and therefore sending per datagram is a way to ensure that the relevant metadata is always available when processing a datagram.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-2">The datagram XR header includes all XR metadata defined by 3GPP as part of the RTP header extension.<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.1-3.1">
+              <p id="section-2.2.1-3.1.1">Mandatory fields:<a href="#section-2.2.1-3.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.1-3.1.2.1">
+                  <p id="section-2.2.1-3.1.2.1.1">E (1)<a href="#section-2.2.1-3.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.1-3.1.2.2">
+                  <p id="section-2.2.1-3.1.2.2.1">D (1)<a href="#section-2.2.1-3.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.1-3.1.2.3">
+                  <p id="section-2.2.1-3.1.2.3.1">PSI (4)<a href="#section-2.2.1-3.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.1-3.1.2.4">
+                  <p id="section-2.2.1-3.1.2.4.1">PSSN (10)<a href="#section-2.2.1-3.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.1-3.1.2.5">
+                  <p id="section-2.2.1-3.1.2.5.1">PSN (6)<a href="#section-2.2.1-3.1.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="section-2.2.1-3.2">
+              <p id="section-2.2.1-3.2.1">Optional fields are dependent on application-layer signalling to be present (e.g., based on indications in publication and subscription messages, while the support of these optional fields would be indicated in the catalog).<a href="#section-2.2.1-3.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.1-3.2.2.1">
+                  <p id="section-2.2.1-3.2.2.1.1">PSSize (24)<a href="#section-2.2.1-3.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.1-3.2.2.2">
+                  <p id="section-2.2.1-3.2.2.2.1">NPDS (16)<a href="#section-2.2.1-3.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="section-2.2.1-3.3">
+              <p id="section-2.2.1-3.3.1">Additional fields are conditional to completion of the RTP header extension work in Release 19 of 3GPP.<a href="#section-2.2.1-3.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.1-3.3.2.1">
+                  <p id="section-2.2.1-3.3.2.1.1">BSize should be present in the first PDU of a burst<a href="#section-2.2.1-3.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.1-3.3.2.2">
+                  <p id="section-2.2.1-3.3.2.2.1">TTNB should be signalled in the last PDU of a burst<a href="#section-2.2.1-3.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+          </ul>
+</section>
+</div>
+<div id="moq-stream-xr-metadata">
+<section id="section-2.2.2">
+          <h4 id="name-moq-stream-xr-metadata">
+<a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-moq-stream-xr-metadata" class="section-name selfRef">MOQ Stream XR Metadata</a>
+          </h4>
+<p id="section-2.2.2-1">When using MOQ in stream mode, explicit XR metadata applies to the whole stream. There is little gain in providing a differentiated QoS for different portions of a same stream, since stream data is usable only when received in sequential order. Therefore, in stream mode, each stream should be a PDU set, which means XR metadata applies to the whole stream.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-2">The stream's metadata includes explicit XR metadata defined by 3GPP as part of the RTP header extension, except for the fields which pertain to individual PDUs, which can be derived unambiguously from QUIC signalling (derivation of E and PSN is described in section 3.1).<a href="#section-2.2.2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.2-3.1">
+              <p id="section-2.2.2-3.1.1">Mandatory fields:<a href="#section-2.2.2-3.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.2-3.1.2.1">
+                  <p id="section-2.2.2-3.1.2.1.1">PSI (4)<a href="#section-2.2.2-3.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.2-3.1.2.2">
+                  <p id="section-2.2.2-3.1.2.2.1">D (1)<a href="#section-2.2.2-3.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.2-3.1.2.3">
+                  <p id="section-2.2.2-3.1.2.3.1">PSSN (10)<a href="#section-2.2.2-3.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="section-2.2.2-3.2">
+              <p id="section-2.2.2-3.2.1">Optional fields are dependent on application-layer signalling to be present (e.g., new fields in publication and subscription messages, in catalog).<a href="#section-2.2.2-3.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.2-3.2.2.1">
+                  <p id="section-2.2.2-3.2.2.1.1">PSSize (24)<a href="#section-2.2.2-3.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.2-3.2.2.2">
+                  <p id="section-2.2.2-3.2.2.2.1">NPDS (16)<a href="#section-2.2.2-3.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="section-2.2.2-3.3">
+              <p id="section-2.2.2-3.3.1">Additional fields are conditional to completion of the RTP header extension work in Release 19 of 3GPP.<a href="#section-2.2.2-3.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.2-3.3.2.1">
+                  <p id="section-2.2.2-3.3.2.1.1">BSize should be present in the first stream of a burst<a href="#section-2.2.2-3.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.2-3.3.2.2">
+                  <p id="section-2.2.2-3.3.2.2.1">TTNB should be signalled in the last stream of a burst (e.g., if possible, in a trailing position in the stream).<a href="#section-2.2.2-3.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+          </ul>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="_section-xr-handling">
+<section id="section-3">
+      <h2 id="name-traffic-handling-of-high-th">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-traffic-handling-of-high-th" class="section-name selfRef">Traffic Handling of High-Throughput Low-Latency Traffic</a>
+      </h2>
+<div id="moq-relay-behavior">
+<section id="section-3.1">
+        <h3 id="name-moq-relay-behavior">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-moq-relay-behavior" class="section-name selfRef">MOQ Relay Behavior</a>
+        </h3>
+<p id="section-3.1-1">A MOQ relay at the ingress point of a wireless network extracts metadata associated with PDU sets.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">In datagram mode, the relay obtains all XR metadata from the datagram XR header.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">In stream mode, the relay obtains the XR metadata fields from the stream header. The MOQ relay derives the following XR metadata, which is not present in the stream header:<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.1-4.1">
+            <p id="section-3.1-4.1.1">E is derived from the FIN flag of the QUIC stream<a href="#section-3.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-4.2">
+            <p id="section-3.1-4.2.1">PSN is generated based on the QUIC/UDP/IP packets received in order of STREAM frame offset. In case there are missing packets, the relay can use the STREAM frame offset and path MTU to determine the sequence number of a packet received after one or more missing packets.<a href="#section-3.1-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.1-5">E and PSN are derived for each PDU of the stream.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="endpoint-behavior">
+<section id="section-3.2">
+        <h3 id="name-endpoint-behavior">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-endpoint-behavior" class="section-name selfRef">Endpoint Behavior</a>
+        </h3>
+<p id="section-3.2-1">To enable XR traffic handling, a MOQ client should set up a MOQ connection through a MOQ relay providing this functionality. Discovery of such relay is out of scope of this document.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">The MOQ server is configured to send XR metadata with a media stream. Both MOQ server and client can include an "xr-handling" field in (respectively) publication and subscription messages, to indicate support for sending and receiving XR metadata. The catalog can also include an "xr-handling" field to indicate support for XR metadata for a track. [TBD: use a mechanism to agree on specific optional metadata to be sent - including whether optional fields are included, and whether release 19 fields are included]<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">Prior to sending a datagram, an endpoint determines the XR metadata applicable to a datagram, and, if applicable, add a datagram XR metadata header in the datagram. [TBD: the datagram XR metadata header should be placed after the MOQ header? Need to define a mechanism to extend the MOQ datagram header].<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">Prior to sending a stream, an endpoint determines the XR metadata applicable to a stream, and, if applicable, add a stream XR metadata header in the stream. [TBD: the stream XR metadata header should be placed after the MOQ stream header? Need to define a mechanism to extend the MOQ stream header].<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="_section-sec">
+<section id="section-4">
+      <h2 id="name-security-considerations">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-4-1">To enable support for the feature described in this document, the application exposes metadata to a MOQ relay under the control of a network or service operator. End-to-end encrypted media is not exposed to the MOQ relay, so this is not seen as a high-risk exposure.<a href="#section-4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="section-5">
+      <h2 id="name-acknowledgments">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="section-5-1">Thanks to Srinivas Gudumasu, who was a contributor to the first revision of this draft. Thanks to Jaya Rao, Ghyslain Pelletier, John Kaippallimalil, Sri Gundavelli and Hang Shi for discussions and comments about this draft.<a href="#section-5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-6">
+      <h2 id="name-informative-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+      </h2>
+<dl class="references">
+<dt id="I-D.draft-ietf-mops-ar-use-case">[I-D.draft-ietf-mops-ar-use-case]</dt>
+      <dd>
+<span class="refAuthor">Krishna, R.</span> and <span class="refAuthor">A. Rahman</span>, <span class="refTitle">"Media Operations Use Case for an Extended Reality Application on Edge Computing Infrastructure"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-mops-ar-use-case-18</span>, <time datetime="2024-06-19" class="refDate">19 June 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-mops-ar-use-case-18">https://datatracker.ietf.org/doc/html/draft-ietf-mops-ar-use-case-18</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.draft-ietf-moq-transport">[I-D.draft-ietf-moq-transport]</dt>
+      <dd>
+<span class="refAuthor">Curley, L.</span>, <span class="refAuthor">Pugin, K.</span>, <span class="refAuthor">Nandakumar, S.</span>, <span class="refAuthor">Vasiliev, V.</span>, and <span class="refAuthor">I. Swett</span>, <span class="refTitle">"Media over QUIC Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-moq-transport-05</span>, <time datetime="2024-07-08" class="refDate">8 July 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-05">https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-05</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TR23.700-70">[TR23.700-70]</dt>
+      <dd>
+<span class="refAuthor">3GPP</span>, <span class="refTitle">"Study on architecture enhancement for Extended Reality and Media service (XRM); Phase 2"</span>, <span class="refContent">3GPP</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="www.3gpp.org/dynareport/23700-70.htm">www.3gpp.org/dynareport/23700-70.htm</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TS23.501">[TS23.501]</dt>
+      <dd>
+<span class="refAuthor">3GPP</span>, <span class="refTitle">"System architecture for the 5G System"</span>, <span class="refContent">3GPP</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="www.3gpp.org/dynareport/23501.htm">www.3gpp.org/dynareport/23501.htm</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TS26.522">[TS26.522]</dt>
+    <dd>
+<span class="refAuthor">3GPP</span>, <span class="refTitle">"5G Real-time Media Transport Protocol Configurations"</span>, <span class="refContent">3GPP</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="www.3gpp.org/dynareport/26522.htm">www.3gpp.org/dynareport/26522.htm</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="xr-in-5g">
+<section id="appendix-A">
+      <h2 id="name-xr-rtp-header-extension-for">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-xr-rtp-header-extension-for" class="section-name selfRef">XR RTP Header Extension for XR Traffic Handling in 5G Networks</a>
+      </h2>
+<p id="appendix-A-1">3GPP defined an RTP header extensions for PDU set marking, in <span>[<a href="#TS26.522" class="cite xref">TS26.522</a>]</span>, which enables a media sender to indicate PDU set metadata in each RTP packet.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<div id="release-18-xr-metadata">
+<section id="appendix-A.1">
+        <h3 id="name-release-18-xr-metadata">
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-release-18-xr-metadata" class="section-name selfRef">Release 18 XR Metadata</a>
+        </h3>
+<p id="appendix-A.1-1">The fields defined in the Release 18 of 3GPP are included in this appendix, for the reader's convenience (text copied from <span>[<a href="#TS26.522" class="cite xref">TS26.522</a>]</span> V18.1.0 with minor adaptations and omissions of some notes for readability):<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.1-2.1">
+            <p id="appendix-A.1-2.1.1"><strong>End PDU of the PDU Set [E]</strong> (1 bit): This field is a flag that shall be set to 1 for the last PDU of the PDU Set and set to 0 for all other PDUs of the PDU Set.<a href="#appendix-A.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.1-2.2">
+            <p id="appendix-A.1-2.2.1"><strong>End of Data Burst [D]</strong> (1 bit): This field is a flag that shall be set to 1 for the last PDU of a Data Burst. It shall be set to 0 for all other PDUs. A Data Burst may consist of one or more PDU Sets.<a href="#appendix-A.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.1-2.3">
+            <p id="appendix-A.1-2.3.1"><strong>PDU Set Importance [PSI]</strong> (4 bits): The PDU Set Importance field indicates the importance of this PDU Set compared to other PDU Sets within the same Multimedia Session. This information may help RAN to discard PDUs, when needed. Lower values shall indicate a higher importance PDU Set, with the highest importance PDU Set indicated by 1 and the lowest importance PDU Set indicated by 15. When the RTP sender cannot define an importance, it shall set the value to 0.<a href="#appendix-A.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.1-2.4">
+            <p id="appendix-A.1-2.4.1"><strong>PDU Set Sequence Number [PSSN]</strong> (10 bits): The sequence number of the PDU Set to which the current PDU belongs, acting as a 10-bit numerical identifier for the PDU Set. The PSSN shall be incremented monotonically by 1 for each subsequent PDU Set.<a href="#appendix-A.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.1-3">NOTE: This value wraps around at 1023, however, using the 16-bit RTP packet sequence number and PSSN pair, a receiver may uniquely distinguish between any PDU Sets.<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.1-4.1">
+            <p id="appendix-A.1-4.1.1"><strong>PDU Sequence Number within a PDU Set [PSN]</strong> (6 bits): The sequence number of the current PDU within the PDU Set. The PSN shall be set to 0 for the first PDU in the PDU Set and incremented monotonically for every PDU in the PDU Set in the order of transmission from the sender.<a href="#appendix-A.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.1-5">NOTE:   A receiver may use the RTP packet sequence number together with the PSN to distinguish between PDUs within a PDU Set that contains more than 64 PDUs.<a href="#appendix-A.1-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.1-6.1">
+            <p id="appendix-A.1-6.1.1"><strong>PDU Set Size [PSSize]</strong> (24 bits): The PDU Set Size indicates the total size of all PDUs of the PDU Set to which this PDU belongs. This field is optional and subject to an SDP signaling offer/answer negotiation, where the RTP sender shall indicate whether it will provide the size of the PDU Set for that RTP stream. If not enabled, the field shall not be present within the RTP HE. If enabled, but the RTP sender is not able to determine the PDU Set Size for a particular PDU Set, it shall set the value to 0 in all PDUs of that PDU Set. The PSSize shall indicate the size of a PDU Set including RTP/UDP/IP header encapsulation overhead of its corresponding PDUs. The PSSize shall be expressed in bytes. It is recommended to add the PDU Set Size field when the Number of PDUs in the PDU Set field is present.<a href="#appendix-A.1-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.1-7">NOTE:   This field may be optionally present given the signaling of the "pdu-set-size" extension attribute in the SDP offer/answer negotiation.<a href="#appendix-A.1-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.1-8.1">
+            <p id="appendix-A.1-8.1.1"><strong>Number of PDUs in the PDU Set [NPDS]</strong> (16 bits): The number of PDUs within the PDU Set indicates the total number of PDUs belonging to the same PDU Set. This field is optional and subject to an SDP signaling offer/answer negotiation, where the RTP sender may indicate whether it will provide the number of PDUs within the PDU Set for that RTP stream. If enabled, but the RTP sender is not able to determine the Number of PDUs in the PDU Set, it shall set the value to 0 in all PDUs of that PDU Set.  It is recommended to add the Number of PDUs in the PDU Set field when the PDU Set Size field is present.<a href="#appendix-A.1-8.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.1-9">NOTE: This field may be optionally present given the signaling of the "num-pdus-in-pdu-set" extension attribute in the SDP offer/answer negotiation.<a href="#appendix-A.1-9" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="release-19-xr-metadata">
+<section id="appendix-A.2">
+        <h3 id="name-release-19-xr-metadata">
+<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-release-19-xr-metadata" class="section-name selfRef">Release 19 XR Metadata</a>
+        </h3>
+<p id="appendix-A.2-1">Potential additional fields in the Release 19 of 3GPP include (text based on work in progress in <span>[<a href="#TR23.700-70" class="cite xref">TR23.700-70</a>]</span>):<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.2-2.1">
+            <p id="appendix-A.2-2.1.1"><strong>Burst size [BSize]</strong>: this field describes the size of a burst of traffic, which includes one or more PDU sets.<a href="#appendix-A.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.2-2.2">
+            <p id="appendix-A.2-2.2.1"><strong>Time-to-next-burst [TTNB]</strong>: this field describes the time between the end of the present burst and the beginning of the next burst.<a href="#appendix-A.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-B">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Xavier de Foy</span></div>
+<div dir="auto" class="left"><span class="org">InterDigital</span></div>
+<div dir="auto" class="left"><span class="country-name">Canada</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:xavier.defoy@interdigital.com" class="email">xavier.defoy@interdigital.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Renan Krishna</span></div>
+<div dir="auto" class="left"><span class="org">InterDigital</span></div>
+<div dir="auto" class="left"><span class="country-name">Canada</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:renan.krishna@interdigital.com" class="email">renan.krishna@interdigital.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Tianji Jiang</span></div>
+<div dir="auto" class="left"><span class="org">China Mobile</span></div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:tianjijiang@chinamobile.com" class="email">tianjijiang@chinamobile.com</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
