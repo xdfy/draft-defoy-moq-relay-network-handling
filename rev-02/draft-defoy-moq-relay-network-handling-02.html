@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>MOQ Relays for Support of High-Throughput Low-Latency Traffic in 5G</title>
+<title>MoQ relays for Support of High-Throughput Low-Latency Traffic in 5G</title>
 <meta content="Xavier de Foy" name="author">
 <meta content="Renan Krishna" name="author">
 <meta content="Tianji Jiang" name="author">
 <meta content="
-       This document describes a mechanism to convey information about media frames. The information is used for specific handling in functions such as error recovery and congestion handling. These functions can be critical to improve energy efficiency and network capacity in some (especially wireless) networks. Due to end-to-end encryption, MOQ relays are expected to extract the metadata required by these functions. This document aims to enable a level of wireless network support for MOQ equivalent to what is possible for RTP. 
+       This document describes a mechanism to convey information about media frames. The information is used for specific handling in functions such as error recovery and congestion handling. These functions can be critical to improve energy efficiency and network capacity in some (especially wireless) networks. Due to end-to-end encryption, MoQ relays are expected to extract the metadata required by these functions. This document aims to enable a level of wireless network support for MoQ equivalent to what is possible for RTP. 
     " name="description">
 <meta content="xml2rfc 3.23.0" name="generator">
 <meta content="draft-defoy-moq-relay-network-handling-02" name="ietf.draft">
@@ -30,7 +30,7 @@
     wcwidth 0.2.13
     weasyprint 61.2
 -->
-<link href="/usr/src/app/tmp/72261f82-3255-442e-bcb9-cf752944461e/draft-defoy-moq-relay-network-handling-02.xml" rel="alternate" type="application/rfc+xml">
+<link href="/usr/src/app/tmp/3388ae2a-3fa3-45db-bdf6-702353ebd414/draft-defoy-moq-relay-network-handling-02.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -1213,11 +1213,11 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">MOQ-EXT-NET-HANDLING</td>
-<td class="right">August 2024</td>
+<td class="right">September 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">de Foy, et al.</td>
-<td class="center">Expires 1 March 2025</td>
+<td class="center">Expires 13 March 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1230,12 +1230,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-defoy-moq-relay-network-handling-02</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-08-28" class="published">28 August 2024</time>
+<time datetime="2024-09-09" class="published">9 September 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-03-01">1 March 2025</time></dd>
+<dd class="expires"><time datetime="2025-03-13">13 March 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1253,10 +1253,10 @@ li > p:last-of-type:only-child {
 </dd>
 </dl>
 </div>
-<h1 id="title">MOQ Relays for Support of High-Throughput Low-Latency Traffic in 5G</h1>
+<h1 id="title">MoQ relays for Support of High-Throughput Low-Latency Traffic in 5G</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document describes a mechanism to convey information about media frames. The information is used for specific handling in functions such as error recovery and congestion handling. These functions can be critical to improve energy efficiency and network capacity in some (especially wireless) networks. Due to end-to-end encryption, MOQ relays are expected to extract the metadata required by these functions. This document aims to enable a level of wireless network support for MOQ equivalent to what is possible for RTP.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document describes a mechanism to convey information about media frames. The information is used for specific handling in functions such as error recovery and congestion handling. These functions can be critical to improve energy efficiency and network capacity in some (especially wireless) networks. Due to end-to-end encryption, MoQ relays are expected to extract the metadata required by these functions. This document aims to enable a level of wireless network support for MoQ equivalent to what is possible for RTP.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1277,7 +1277,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 1 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1310,7 +1310,7 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.1.1"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
-                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-techniques-used-by-wireless" class="internal xref">Techniques used by Wireless Networks for XR Traffic</a></p>
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-techniques-used-by-wireless" class="internal xref">Techniques used by Wireless Networks for XR Traffic Handling</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
                 <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-identifying-xr-metadata-in-" class="internal xref">Identifying XR Metadata in RTP Media Flows</a></p>
@@ -1324,16 +1324,19 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-xr-metadata-for-5g" class="internal xref">XR Metadata for 5G</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-list-of-currently-defined-x" class="internal xref">List of Currently Defined XR Metadata</a></p>
+                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-xr-metadata-for-pdu-sets" class="internal xref">XR Metadata for PDU Sets</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-applying-xr-metadata-to-moq" class="internal xref">Applying XR Metadata to MOQ</a></p>
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-applying-xr-metadata-to-moq" class="internal xref">Applying XR Metadata to MOQT</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
-                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-moq-datagram-xr-metadata" class="internal xref">MOQ Datagram XR Metadata</a></p>
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-xr-metadata-support-signall" class="internal xref">XR Metadata Support Signalling in Setup Messages</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.2">
-                    <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="auto internal xref">2.2.2</a>.  <a href="#name-moq-stream-xr-metadata" class="internal xref">MOQ Stream XR Metadata</a></p>
+                    <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="auto internal xref">2.2.2</a>.  <a href="#name-xr-metadata-in-moqt-datagra" class="internal xref">XR Metadata in MOQT Datagrams</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.3">
+                    <p id="section-toc.1-1.2.2.2.2.3.1"><a href="#section-2.2.3" class="auto internal xref">2.2.3</a>.  <a href="#name-xr-metadata-in-moqt-streams" class="internal xref">XR Metadata in MOQT Streams</a></p>
 </li>
                 </ul>
 </li>
@@ -1343,7 +1346,7 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-traffic-handling-of-high-th" class="internal xref">Traffic Handling of High-Throughput Low-Latency Traffic</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-moq-relay-behavior" class="internal xref">MOQ Relay Behavior</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-moq-relay-behavior" class="internal xref">MoQ relay Behavior</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-endpoint-behavior" class="internal xref">Endpoint Behavior</a></p>
@@ -1351,27 +1354,30 @@ li > p:last-of-type:only-child {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-iana-considerations" class="internal xref">IANA considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-xr-rtp-header-extension-for" class="internal xref">XR RTP Header Extension for XR Traffic Handling in 5G Networks</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-release-18-xr-metadata" class="internal xref">Release 18 XR Metadata</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-release-19-xr-metadata" class="internal xref">Release 19 XR Metadata</a></p>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-xr-rtp-header-extension-for" class="internal xref">XR RTP Header Extension for XR Traffic Handling in 5G Networks</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-release-18-xr-metadata" class="internal xref">Release 18 XR Metadata</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-release-19-xr-metadata" class="internal xref">Release 19 XR Metadata</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1382,23 +1388,23 @@ li > p:last-of-type:only-child {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">Wireless networks can be a challenging environment for applications with high-throughput and low latency requirements, such as video conferencing and Extended Reality (XR, presented for example in <span>[<a href="#I-D.draft-ietf-mops-ar-use-case" class="cite xref">I-D.draft-ietf-mops-ar-use-case</a>]</span>). Wireless networks implement techniques to improve network capacity and energy efficiency, as well as reduce the impact of packet losses on users' quality of experience (<a href="#intro-1-1" class="auto internal xref">Section 1.1</a>). An extension to the RTP protocol has been defined, which enables metadata associated with application data units to be identified at the ingress point of the wireless network (<a href="#intro-1-2" class="auto internal xref">Section 1.2</a>). To enable a similar operation with the MoQ protocol <span>[<a href="#I-D.draft-ietf-moq-transport" class="cite xref">I-D.draft-ietf-moq-transport</a>]</span>, this document describes how a MOQ relay can be used at the ingress point of the wireless network (<a href="#intro-1-3" class="auto internal xref">Section 1.3</a>).<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">Wireless networks can be a challenging environment for applications with high-throughput and low latency requirements, such as video conferencing and Extended Reality (XR, presented for example in <span>[<a href="#I-D.draft-ietf-mops-ar-use-case" class="cite xref">I-D.draft-ietf-mops-ar-use-case</a>]</span>). Wireless networks implement techniques to improve network capacity and energy efficiency, as well as reduce the impact of packet losses on users' quality of experience (<a href="#intro-1-1" class="auto internal xref">Section 1.1</a>). An extension to the RTP protocol has been defined, which enables metadata associated with application data units to be identified at the ingress point of the wireless network (<a href="#intro-1-2" class="auto internal xref">Section 1.2</a>). To enable a similar operation with the MoQ protocol <span>[<a href="#I-D.draft-ietf-moq-transport" class="cite xref">I-D.draft-ietf-moq-transport</a>]</span>, this document describes how a MoQ relay can be used at the ingress point of the wireless network (<a href="#intro-1-3" class="auto internal xref">Section 1.3</a>).<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">The rest of this document is structured as follows:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-3.1">
           <p id="section-1-3.1.1"><a href="#_section-xr-metadata" class="auto internal xref">Section 2</a> describes XR metadata for MoQ, based on what is currently defined by 3GPP for RTP.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-3.2">
-          <p id="section-1-3.2.1"><a href="#_section-xr-handling" class="auto internal xref">Section 3</a> describes the behavior of the MOQ relay and of MOQ endpoints.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
+          <p id="section-1-3.2.1"><a href="#_section-xr-handling" class="auto internal xref">Section 3</a> describes the behavior of the MoQ relay and of MOQ endpoints.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-3.3">
-          <p id="section-1-3.3.1"><a href="#_section-sec" class="auto internal xref">Section 4</a> describes applicable security considerations.<a href="#section-1-3.3.1" class="pilcrow">¶</a></p>
+          <p id="section-1-3.3.1"><a href="#_section-sec" class="auto internal xref">Section 5</a> describes applicable security considerations.<a href="#section-1-3.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <div id="intro-1-1">
 <section id="section-1.1">
         <h3 id="name-techniques-used-by-wireless">
-<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-techniques-used-by-wireless" class="section-name selfRef">Techniques used by Wireless Networks for XR Traffic</a>
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-techniques-used-by-wireless" class="section-name selfRef">Techniques used by Wireless Networks for XR Traffic Handling</a>
         </h3>
 <p id="section-1.1-1">The network can handle groups of packets based on how critical they are to the user's experience. Some groups of data packets hold application data units that are handled (e.g., decoded) together by the application. 3GPP defines the term "PDU set" to identify these groups of data packets carrying the payload of an application data unit <span>[<a href="#TS23.501" class="cite xref">TS23.501</a>]</span>, which can correspond to the data packets of an application layer data unit. The handling of application data units by the application can depend on other application data units (e.g., in the case of decoding dependency).
 The wireless network performs differentiated handling of groups of data packets. For example, it prioritizes some groups over others in case of congestion. In congestion situations, the network can also selectively drop data packets that depend on an already lost data packets. Furthermore, the network can limit the amount of time that the radio needs to stay awake to transmit and receive data. To achieve this this, the scheduler can use information on the size and periodicity of traffic, as well as delay budget and maximum tolerable jitter specific to the application.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
@@ -1417,8 +1423,8 @@ The wireless network performs differentiated handling of groups of data packets.
         <h3 id="name-identifying-xr-metadata-in-m">
 <a href="#section-1.3" class="section-number selfRef">1.3. </a><a href="#name-identifying-xr-metadata-in-m" class="section-name selfRef">Identifying XR Metadata in MOQ flows</a>
         </h3>
-<p id="section-1.3-1">For XR media traffic transported over the MOQ protocol, the UPF cannot access XR metadata unless it is exposed to the UPF in some fashion. This document describes how the UPF can act as, or communicate with, a MOQ relay to obtain XR metadata associated with media data. To enable this behavior, it is also necessary for the media sender to identify application data units that correspond to different desired traffic handling (e.g., different layers within a media frame), and provide associated metadata. <a href="#_figure-relay" class="auto internal xref">Figure 1</a> describes a UPF with a MOQ relay functionality, identifying XR metadata and transmitting it to access nodes, for example, for a media stream sent by B towards A and C. For privacy and security, it is desirable that the MOQ relay, which can be operated by a network or service operator, does not have access to media data. For interoperability, it is also desirable for these mechanisms to not be codec-specific.<a href="#section-1.3-1" class="pilcrow">¶</a></p>
-<span id="name-traffic-handling-by-access-"></span><div id="_figure-relay">
+<p id="section-1.3-1">For XR media traffic transported over the MOQ protocol, the UPF cannot access XR metadata unless it is exposed to the UPF in some fashion. This document describes how the UPF can act as, or communicate with, a MoQ relay to obtain XR metadata associated with media data. To enable this behavior, it is also necessary for the media sender to identify application data units that correspond to different desired traffic handling (e.g., different layers within a media frame), and provide associated metadata. <a href="#_figure-relay" class="auto internal xref">Figure 1</a> describes a UPF with a MoQ relay functionality, identifying XR metadata and transmitting it to access nodes, for example, for a media stream sent by B towards A and C. For privacy and security, it is desirable that the MoQ relay, which can be operated by a network or service operator, does not have access to media data. For interoperability, it is also desirable for these mechanisms to not be codec specific.<a href="#section-1.3-1" class="pilcrow">¶</a></p>
+<span id="name-xr-traffic-handling-by-acce"></span><div id="_figure-relay">
 <figure id="figure-1">
           <div class="alignLeft art-text artwork" id="section-1.3-2.1">
 <pre>
@@ -1426,7 +1432,7 @@ The wireless network performs differentiated handling of groups of data packets.
   | A |&lt;-|Access Node|------------|           |
   +---+  |           |&lt;-metadata--|           |            +---+
          +-----------+            |    UPF    |&lt;--data+md--| B |
-                                  | MOQ Relay |            +---+
+                                  | MoQ relay |            +---+
          +-----------+            |           |
   +---+  |           |&lt;-metadata--|           |
   | C |&lt;-|Access Node|------------|           |
@@ -1434,7 +1440,7 @@ The wireless network performs differentiated handling of groups of data packets.
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
-<a href="#name-traffic-handling-by-access-" class="selfRef">Traffic Handling by Access Networks using a MOQ Relay.</a>
+<a href="#name-xr-traffic-handling-by-acce" class="selfRef">XR Traffic Handling by Access Networks using a MoQ relay.</a>
           </figcaption></figure>
 </div>
 </section>
@@ -1446,37 +1452,37 @@ The wireless network performs differentiated handling of groups of data packets.
       <h2 id="name-xr-metadata-for-5g">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-xr-metadata-for-5g" class="section-name selfRef">XR Metadata for 5G</a>
       </h2>
-<div id="list-of-currently-defined-xr-metadata">
+<div id="xr-metadata-for-pdu-sets">
 <section id="section-2.1">
-        <h3 id="name-list-of-currently-defined-x">
-<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-list-of-currently-defined-x" class="section-name selfRef">List of Currently Defined XR Metadata</a>
+        <h3 id="name-xr-metadata-for-pdu-sets">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-xr-metadata-for-pdu-sets" class="section-name selfRef">XR Metadata for PDU Sets</a>
         </h3>
-<p id="section-2.1-1">XR metadata applies to IP packets from the 5G system standpoint. Some metadata is the same for a group of IP packets (the PDU set), while some metadata varies per IP packet within the group. Some metadata relates to a data burst, which may consist of one or more PDU sets sent together as one burst of data.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1-2">3GPP defines metadata used for XR traffic handling:<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-1">XR metadata applies to IP packets from the 5G system standpoint. Some metadata is the same for a group of IP packets (the PDU set), while some metadata varies per IP packet within the PDU set. Some metadata relates to a data burst, which may consist of one or more PDU sets sent together as one burst of data.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">3GPP defines metadata used for XR traffic handling when using RTP:<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-3.1">
             <p id="section-2.1-3.1.1">In the 3GPP release 18 (RTP header extension for PDU set marking, <span>[<a href="#TS26.522" class="cite xref">TS26.522</a>]</span>)<a href="#section-2.1-3.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-3.1.2.1">
-                <p id="section-2.1-3.1.2.1.1">The <em>PDU Set Importance</em> (PSI, 4 bits) is the importance of this PDU Set compared to other PDU Sets within the same Multimedia Session.<a href="#section-2.1-3.1.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-3.1.2.1.1">The <em>PDU Set Importance</em> (<strong>PSI</strong>, 4 bits) is the importance of this PDU Set compared to other PDU Sets within the same Multimedia Session.<a href="#section-2.1-3.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-3.1.2.2">
-                <p id="section-2.1-3.1.2.2.1">The <em>end PDU of PDU set</em> (E, 1 bit) indicates the last PDU of the PDU set.<a href="#section-2.1-3.1.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-3.1.2.2.1">The <em>end PDU of PDU set</em> (<strong>E</strong>, 1 bit) indicates the last PDU of the PDU set.<a href="#section-2.1-3.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-3.1.2.3">
-                <p id="section-2.1-3.1.2.3.1">The <em>end of data burst</em> (D, 1 bit) indicates the last PDU of a data burst.<a href="#section-2.1-3.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-3.1.2.3.1">The <em>end of data burst</em> (<strong>D</strong>, 1 bit) indicates the last PDU of a data burst.<a href="#section-2.1-3.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-3.1.2.4">
-                <p id="section-2.1-3.1.2.4.1">The <em>PDU set sequence number</em> (PSSN, 10 bits) identifies the PDU set. The PSSN is incremented monotonically by 1 for each subsequent PDU set.<a href="#section-2.1-3.1.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-3.1.2.4.1">The <em>PDU set sequence number</em> (<strong>PSSN</strong>, 10 bits) identifies the PDU set. The PSSN is incremented monotonically by 1 for each subsequent PDU set.<a href="#section-2.1-3.1.2.4.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-3.1.2.5">
-                <p id="section-2.1-3.1.2.5.1">The <em>PDU Sequence Number within a PDU Set</em> (PSN, 6 bits) identifies a PDU with the PDU set, starting from 0 and incremented monotonically for every PDU in the PDU set in the order of transmission from the sender.<a href="#section-2.1-3.1.2.5.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-3.1.2.5.1">The <em>PDU Sequence Number within a PDU Set</em> (<strong>PSN</strong>, 6 bits) identifies a PDU with the PDU set, starting from 0 and incremented monotonically for every PDU in the PDU set in the order of transmission from the sender.<a href="#section-2.1-3.1.2.5.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-3.1.2.6">
-                <p id="section-2.1-3.1.2.6.1">The <em>PDU set size</em> (PSSize, 24 bits) is an optional field which indicates the total size, in bytes, of all PDUs of the PDU Set (including IP header and IP payload).<a href="#section-2.1-3.1.2.6.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-3.1.2.6.1">The <em>PDU set size</em> (<strong>PSSize</strong>, 24 bits) is an optional field which indicates the total size, in bytes, of all PDUs of the PDU Set (including IP header and IP payload).<a href="#section-2.1-3.1.2.6.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-3.1.2.7">
-                <p id="section-2.1-3.1.2.7.1">The <em>number of PDUs in the PDU Set</em> (NPDS, 16 bits) is an optional field which indicates the number of PDUs in the same PDU set.<a href="#section-2.1-3.1.2.7.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-3.1.2.7.1">The <em>number of PDUs in the PDU Set</em> (<strong>NPDS</strong>, 16 bits) is an optional field which indicates the number of PDUs in the same PDU set.<a href="#section-2.1-3.1.2.7.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1484,175 +1490,145 @@ The wireless network performs differentiated handling of groups of data packets.
             <p id="section-2.1-3.2.1">In the 3GPP release 19 (work in progress, in normative stage based on the conclusion of <span>[<a href="#TR23.700-70" class="cite xref">TR23.700-70</a>]</span>)<a href="#section-2.1-3.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-3.2.2.1">
-                <p id="section-2.1-3.2.2.1.1">The <em>Burst Size</em> (BSize) describes the size of a burst of traffic, which includes one or more PDU sets.<a href="#section-2.1-3.2.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-3.2.2.1.1">The <em>Burst Size</em> (<strong>BSize</strong>) describes the size of a burst of traffic, which includes one or more PDU sets.<a href="#section-2.1-3.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-3.2.2.2">
-                <p id="section-2.1-3.2.2.2.1">The <em>Time to Next Burst</em> (TTNB) describes the time between the end of the present burst and the beginning of the next burst.<a href="#section-2.1-3.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-3.2.2.2.1">The <em>Time to Next Burst</em> (<strong>TTNB</strong>) describes the time between the end of the present burst and the beginning of the next burst.<a href="#section-2.1-3.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
         </ul>
-<p id="section-2.1-4">The optional RTP header extension fields are included subjects to an SDP signaling offer/answer negotiation.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1-4">The optional header extension fields are included subjects to an SDP signaling offer/answer negotiation.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="applying-xr-metadata-to-moq">
+<div id="applying-xr-metadata-to-moqt">
 <section id="section-2.2">
         <h3 id="name-applying-xr-metadata-to-moq">
-<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-applying-xr-metadata-to-moq" class="section-name selfRef">Applying XR Metadata to MOQ</a>
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-applying-xr-metadata-to-moq" class="section-name selfRef">Applying XR Metadata to MOQT</a>
         </h3>
-<p id="section-2.2-1">Question #1: Should XR metadata for MOQ be worked on at the IETF or in 3GPP SA4 (like the RTP header extension work)? For now, the authors are considering the following approach:<a href="#section-2.2-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.2-2.1">
-            <p id="section-2.2-2.1.1">Define XR metadata for MOQ within the IETF MOQ WG, since the MOQ protocol is still in development and some questions (like extension mechanisms) can be best addressed by the protocol designers.<a href="#section-2.2-2.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-2.2-2.2">
-            <p id="section-2.2-2.2.1">To limit the need for 3GPP-specific expertise, restrict the initial definition of XR metadata for MOQ to what has been defined by 3GPP for RTP, in Release 18 <span>[<a href="#TS26.522" class="cite xref">TS26.522</a>]</span>, and in Release 19 (assuming the Release 19 work will be completed by the time this draft is finalized).<a href="#section-2.2-2.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-2.2-3">Question #2: Should XR metadata be inferred from existing MOQ metadata or should XR metadata be explicit? For now, the authors are considering the following approach:<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.2-4.1">
-            <p id="section-2.2-4.1.1">Derive XR metadata if there is no practical way to signal it explicitly in MOQ (e.g., E and PSN in stream mode).<a href="#section-2.2-4.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-2.2-4.2">
-            <p id="section-2.2-4.2.1">Use explicit metadata in other cases, to associate metadata with a stream or datagram.<a href="#section-2.2-4.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-2.2-4.3">
-            <p id="section-2.2-4.3.1">Based on discussions in the MOQ WG, if a XR metadata field is determined to be exactly equivalent to an existing MOQ metadata field, in all use cases, then the equivalent existing MOQ metadata field will be preferred.<a href="#section-2.2-4.3.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-2.2-5">Our rationale for proposing this approach to question #2 includes:<a href="#section-2.2-5" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.2-6.1">
-            <p id="section-2.2-6.1.1">Metadata generation tools for the RTP header extension for XR can be reused to generate XR metadata for MOQ.<a href="#section-2.2-6.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-2.2-6.2">
-            <p id="section-2.2-6.2.1">It keeps XR metadata generation independent from the management of MOQ signaling, which reduces the risks for side effects and the need for heuristics in the MOQ relay to avoid those side effects. Future design evolutions of MOQ would also need to take into account its usage in 5G for XR.<a href="#section-2.2-6.2.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.2-6.2.2.1">
-                <p id="section-2.2-6.2.2.1.1">For example, in datagram mode, the boundaries of a PDU set may be an object (which would be the default heuristic choice) but it could also be a group. Reusing MOQ object ID as PSSN for example, may not work in all cases.<a href="#section-2.2-6.2.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-2.2-6.2.2.2">
-                <p id="section-2.2-6.2.2.2.1">In another example, the priority in MOQ may or may not always align with PDU set importance, because the priority is for the application layer while the importance is for differentiated QoS handling in the network.<a href="#section-2.2-6.2.2.2.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</li>
-          <li class="normal" id="section-2.2-6.3">
-            <p id="section-2.2-6.3.1">Explicitly packaging XR metadata in MOQ can also simplify processing, since the suitability of a MOQ session for XR handling can be easily determined, based on the presence of explicit XR metadata.<a href="#section-2.2-6.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-2.2-6.4">
-            <p id="section-2.2-6.4.1">Some XR metadata is not covered by MOQ metadata today (e.g., BSize, TTNB) and needs to be explicit.<a href="#section-2.2-6.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-2.2-6.5">
-            <p id="section-2.2-6.5.1">Using explicit signalling, the sender can determine which part of the data flow is in a PDU set, and which part is not in a PDU set.<a href="#section-2.2-6.5.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.2-6.5.2.1">
-                <p id="section-2.2-6.5.2.1.1">For example, in a QUIC session that includes MOQ XR streams and other streams, control or other application traffic, the sender can explicitly mark the MOQ XR streams with XR metadata.<a href="#section-2.2-6.5.2.1.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</li>
-          <li class="normal" id="section-2.2-6.6">
-            <p id="section-2.2-6.6.1">Finally, XR metadata can be extended or modified from one 3GPP release to the next, and explicit versions of XR metadata for MOQ can be defined in sync with the RTP header extension for XR, independently from other MOQ protocol aspects.<a href="#section-2.2-6.6.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<div id="moq-datagram-xr-metadata">
+<p id="section-2.2-1">In MOQT, XR metadata is transmitted in object headers. This document describes XR metadata in the MOQT protocol, as needed for Release 18 and 19 of 3GPP. The design approach is to derive the XR metadata from existing signalling, when possible, and explicitly signal XR metadata, as part of a MoQ extension, in other cases.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2"><em>NOTE: a MOQT extension mechanism is currently being defined in <a href="https://github.com/moq-wg/moq-transport/pull/502/files">https://github.com/moq-wg/moq-transport/pull/502/files</a>. This document will be updated to use this mechanism, once published.</em><a href="#section-2.2-2" class="pilcrow">¶</a></p>
+<div id="xr-metadata-support-signalling-in-setup-messages">
 <section id="section-2.2.1">
-          <h4 id="name-moq-datagram-xr-metadata">
-<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-moq-datagram-xr-metadata" class="section-name selfRef">MOQ Datagram XR Metadata</a>
+          <h4 id="name-xr-metadata-support-signall">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-xr-metadata-support-signall" class="section-name selfRef">XR Metadata Support Signalling in Setup Messages</a>
           </h4>
-<p id="section-2.2.1-1">When using MOQ in datagram mode, XR metadata is sent per datagram, since datagrams can be lost, and therefore sending per datagram is a way to ensure that the relevant metadata is always available when processing a datagram.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-2">The datagram XR header includes all XR metadata defined by 3GPP as part of the RTP header extension.<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-1">Explicit metadata is part of an extension indicated with the setup parameter "3gpp-xr", which may hold values of type varint:<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2.1-3.1">
-              <p id="section-2.2.1-3.1.1">Mandatory fields:<a href="#section-2.2.1-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.2.1-2.1">
+              <p id="section-2.2.1-2.1.1">0x00: No XR metadata<a href="#section-2.2.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.1-2.2">
+              <p id="section-2.2.1-2.2.1">0x01: Release 18 XR metadata<a href="#section-2.2.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.1-2.3">
+              <p id="section-2.2.1-2.3.1">0x02: Release 19 XR metadata<a href="#section-2.2.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.2.1-3">An endpoint may indicate support for both sets of metadata using a value of 0x03.<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-4">The parameters PSSize and NPDS are optional and their support is indicated with the setup parameter "3gpp-xr-options", which may hold values of type varint:<a href="#section-2.2.1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2.1-3.1.2.1">
-                  <p id="section-2.2.1-3.1.2.1.1">E (1)<a href="#section-2.2.1-3.1.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.2.1-5.1">
+              <p id="section-2.2.1-5.1.1">0x00: No optional parameters<a href="#section-2.2.1-5.1.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-2.2.1-3.1.2.2">
-                  <p id="section-2.2.1-3.1.2.2.1">D (1)<a href="#section-2.2.1-3.1.2.2.1" class="pilcrow">¶</a></p>
-</li>
-                <li class="normal" id="section-2.2.1-3.1.2.3">
-                  <p id="section-2.2.1-3.1.2.3.1">PSI (4)<a href="#section-2.2.1-3.1.2.3.1" class="pilcrow">¶</a></p>
-</li>
-                <li class="normal" id="section-2.2.1-3.1.2.4">
-                  <p id="section-2.2.1-3.1.2.4.1">PSSN (10)<a href="#section-2.2.1-3.1.2.4.1" class="pilcrow">¶</a></p>
-</li>
-                <li class="normal" id="section-2.2.1-3.1.2.5">
-                  <p id="section-2.2.1-3.1.2.5.1">PSN (6)<a href="#section-2.2.1-3.1.2.5.1" class="pilcrow">¶</a></p>
-</li>
-              </ul>
-</li>
-            <li class="normal" id="section-2.2.1-3.2">
-              <p id="section-2.2.1-3.2.1">Optional fields are dependent on application-layer signalling to be present (e.g., based on indications in publication and subscription messages, while the support of these optional fields would be indicated in the catalog).<a href="#section-2.2.1-3.2.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.2.1-3.2.2.1">
-                  <p id="section-2.2.1-3.2.2.1.1">PSSize (24)<a href="#section-2.2.1-3.2.2.1.1" class="pilcrow">¶</a></p>
-</li>
-                <li class="normal" id="section-2.2.1-3.2.2.2">
-                  <p id="section-2.2.1-3.2.2.2.1">NPDS (16)<a href="#section-2.2.1-3.2.2.2.1" class="pilcrow">¶</a></p>
-</li>
-              </ul>
-</li>
-            <li class="normal" id="section-2.2.1-3.3">
-              <p id="section-2.2.1-3.3.1">Additional fields are conditional to completion of the RTP header extension work in Release 19 of 3GPP.<a href="#section-2.2.1-3.3.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.2.1-3.3.2.1">
-                  <p id="section-2.2.1-3.3.2.1.1">BSize should be present in the first PDU of a burst<a href="#section-2.2.1-3.3.2.1.1" class="pilcrow">¶</a></p>
-</li>
-                <li class="normal" id="section-2.2.1-3.3.2.2">
-                  <p id="section-2.2.1-3.3.2.2.1">TTNB should be signalled in the last PDU of a burst<a href="#section-2.2.1-3.3.2.2.1" class="pilcrow">¶</a></p>
-</li>
-              </ul>
+            <li class="normal" id="section-2.2.1-5.2">
+              <p id="section-2.2.1-5.2.1">0x01: PSSize and NPDS parameters are included<a href="#section-2.2.1-5.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
 </div>
-<div id="moq-stream-xr-metadata">
+<div id="xr-metadata-in-moqt-datagrams">
 <section id="section-2.2.2">
-          <h4 id="name-moq-stream-xr-metadata">
-<a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-moq-stream-xr-metadata" class="section-name selfRef">MOQ Stream XR Metadata</a>
+          <h4 id="name-xr-metadata-in-moqt-datagra">
+<a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-xr-metadata-in-moqt-datagra" class="section-name selfRef">XR Metadata in MOQT Datagrams</a>
           </h4>
-<p id="section-2.2.2-1">When using MOQ in stream mode, explicit XR metadata applies to the whole stream. There is little gain in providing a differentiated QoS for different portions of a same stream, since stream data is usable only when received in sequential order. Therefore, in stream mode, each stream should be a PDU set, which means XR metadata applies to the whole stream.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.2-2">The stream's metadata includes explicit XR metadata defined by 3GPP as part of the RTP header extension, except for the fields which pertain to individual PDUs, which can be derived unambiguously from QUIC signalling (derivation of E and PSN is described in section 3.1).<a href="#section-2.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-1">When using MOQ in datagram mode, the object XR header includes the following fields.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2.2-3.1">
-              <p id="section-2.2.2-3.1.1">Mandatory fields:<a href="#section-2.2.2-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.2.2-2.1">
+              <p id="section-2.2.2-2.1.1">When 3gpp-xr bit 0 or 1 is set, the following fields are present in every object.<a href="#section-2.2.2-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2.2-3.1.2.1">
-                  <p id="section-2.2.2-3.1.2.1.1">PSI (4)<a href="#section-2.2.2-3.1.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.2.2-2.1.2.1">
+                  <p id="section-2.2.2-2.1.2.1.1">E (1)<a href="#section-2.2.2-2.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-2.2.2-3.1.2.2">
-                  <p id="section-2.2.2-3.1.2.2.1">D (1)<a href="#section-2.2.2-3.1.2.2.1" class="pilcrow">¶</a></p>
+                <li class="normal" id="section-2.2.2-2.1.2.2">
+                  <p id="section-2.2.2-2.1.2.2.1">D (1)<a href="#section-2.2.2-2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-2.2.2-3.1.2.3">
-                  <p id="section-2.2.2-3.1.2.3.1">PSSN (10)<a href="#section-2.2.2-3.1.2.3.1" class="pilcrow">¶</a></p>
+                <li class="normal" id="section-2.2.2-2.1.2.3">
+                  <p id="section-2.2.2-2.1.2.3.1">PSSN (10)<a href="#section-2.2.2-2.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.2-2.1.2.4">
+                  <p id="section-2.2.2-2.1.2.4.1">PSN (6)<a href="#section-2.2.2-2.1.2.4.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
-            <li class="normal" id="section-2.2.2-3.2">
-              <p id="section-2.2.2-3.2.1">Optional fields are dependent on application-layer signalling to be present (e.g., new fields in publication and subscription messages, in catalog).<a href="#section-2.2.2-3.2.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.2.2-2.2">
+              <p id="section-2.2.2-2.2.1">When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set, the following fields are present in some objects.<a href="#section-2.2.2-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2.2-3.2.2.1">
-                  <p id="section-2.2.2-3.2.2.1.1">PSSize (24)<a href="#section-2.2.2-3.2.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.2.2-2.2.2.1">
+                  <p id="section-2.2.2-2.2.2.1.1">PSSize (24)<a href="#section-2.2.2-2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-2.2.2-3.2.2.2">
-                  <p id="section-2.2.2-3.2.2.2.1">NPDS (16)<a href="#section-2.2.2-3.2.2.2.1" class="pilcrow">¶</a></p>
+                <li class="normal" id="section-2.2.2-2.2.2.2">
+                  <p id="section-2.2.2-2.2.2.2.1">NPDS (16)<a href="#section-2.2.2-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
-            <li class="normal" id="section-2.2.2-3.3">
-              <p id="section-2.2.2-3.3.1">Additional fields are conditional to completion of the RTP header extension work in Release 19 of 3GPP.<a href="#section-2.2.2-3.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="section-2.2.2-2.3">
+              <p id="section-2.2.2-2.3.1">When 3gpp-xr bit 1 is set, the following fields are present in some objects.<a href="#section-2.2.2-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2.2-3.3.2.1">
-                  <p id="section-2.2.2-3.3.2.1.1">BSize should be present in the first stream of a burst<a href="#section-2.2.2-3.3.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.2.2-2.3.2.1">
+                  <p id="section-2.2.2-2.3.2.1.1">BSize (size TBD)<a href="#section-2.2.2-2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-2.2.2-3.3.2.2">
-                  <p id="section-2.2.2-3.3.2.2.1">TTNB should be signalled in the last stream of a burst (e.g., if possible, in a trailing position in the stream).<a href="#section-2.2.2-3.3.2.2.1" class="pilcrow">¶</a></p>
+                <li class="normal" id="section-2.2.2-2.3.2.2">
+                  <p id="section-2.2.2-2.3.2.2.1">TTNB (size TBD)<a href="#section-2.2.2-2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
           </ul>
+<p id="section-2.2.2-3">PSI is not included and can be derived from the publisher's priority field of the MOQT object metadata.<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="xr-metadata-in-moqt-streams">
+<section id="section-2.2.3">
+          <h4 id="name-xr-metadata-in-moqt-streams">
+<a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-xr-metadata-in-moqt-streams" class="section-name selfRef">XR Metadata in MOQT Streams</a>
+          </h4>
+<p id="section-2.2.3-1">When using MOQT in stream mode, the object XR header includes the following fields.<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.3-2.1">
+              <p id="section-2.2.3-2.1.1">When 3gpp-xr bit 0 or 1 is set, the following fields are present in every object.<a href="#section-2.2.3-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.3-2.1.2.1">
+                  <p id="section-2.2.3-2.1.2.1.1">D (1)<a href="#section-2.2.3-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.3-2.1.2.2">
+                  <p id="section-2.2.3-2.1.2.2.1">PSSN (10)<a href="#section-2.2.3-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="section-2.2.3-2.2">
+              <p id="section-2.2.3-2.2.1">When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set, the following fields are present in every objects.<a href="#section-2.2.3-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.3-2.2.2.1">
+                  <p id="section-2.2.3-2.2.2.1.1">PSSize (24)<a href="#section-2.2.3-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.3-2.2.2.2">
+                  <p id="section-2.2.3-2.2.2.2.1">NPDS (16)<a href="#section-2.2.3-2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="section-2.2.3-2.3">
+              <p id="section-2.2.3-2.3.1">When 3gpp-xr bit 1 is set, the following fields are present in some objects.<a href="#section-2.2.3-2.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.3-2.3.2.1">
+                  <p id="section-2.2.3-2.3.2.1.1">BSize (size TBD)<a href="#section-2.2.3-2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.3-2.3.2.2">
+                  <p id="section-2.2.3-2.3.2.2.1">TTNB (size TBD)<a href="#section-2.2.3-2.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              </ul>
+</li>
+          </ul>
+<p id="section-2.2.3-3">PSI is not included and can be derived from the publisher's priority field of the MOQT object metadata. E and PSN are not included and can be derived from QUIC signalling.<a href="#section-2.2.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1667,20 +1643,22 @@ The wireless network performs differentiated handling of groups of data packets.
 <div id="moq-relay-behavior">
 <section id="section-3.1">
         <h3 id="name-moq-relay-behavior">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-moq-relay-behavior" class="section-name selfRef">MOQ Relay Behavior</a>
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-moq-relay-behavior" class="section-name selfRef">MoQ relay Behavior</a>
         </h3>
-<p id="section-3.1-1">A MOQ relay at the ingress point of a wireless network extracts metadata associated with PDU sets.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">In datagram mode, the relay obtains all XR metadata from the datagram XR header.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">In stream mode, the relay obtains the XR metadata fields from the stream header. The MOQ relay derives the following XR metadata, which is not present in the stream header:<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">A MoQ relay at the ingress point of a wireless network extracts metadata associated with PDU sets.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">The relay obtains the PDU set XR metadata from the object XR header, and<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1-4.1">
-            <p id="section-3.1-4.1.1">E is derived from the FIN flag of the QUIC stream<a href="#section-3.1-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.1-3.1">
+            <p id="section-3.1-3.1.1">PSI (4 bits) is derived from the publisher's priority (8 bits). To faciliate the mapping, it is recommended for the publisher to only use the 4 lower bits of the publisher's priority, and set the higher 4 bits to zero.<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-4.2">
-            <p id="section-3.1-4.2.1">PSN is generated based on the QUIC/UDP/IP packets received in order of STREAM frame offset. In case there are missing packets, the relay can use the STREAM frame offset and path MTU to determine the sequence number of a packet received after one or more missing packets.<a href="#section-3.1-4.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.1-3.2">
+            <p id="section-3.1-3.2.1">When objects are transported in MOQT streams, E is derived from the FIN flag of the QUIC stream<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-3.3">
+            <p id="section-3.1-3.3.1">When objects are transported in MOQT streams, PSN is generated based on the QUIC/UDP/IP packets received in order of STREAM frame offset. In case there are missing packets, the relay can use the STREAM frame offset and path MTU to determine the sequence number of a packet received after one or more missing packets.<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.1-5">E and PSN are derived for each PDU of the stream.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">The relay transmits the PDU set XR metadata along with each IP packet, to the radio access network, which uses them to apply XR traffic handling.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="endpoint-behavior">
@@ -1688,34 +1666,41 @@ The wireless network performs differentiated handling of groups of data packets.
         <h3 id="name-endpoint-behavior">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-endpoint-behavior" class="section-name selfRef">Endpoint Behavior</a>
         </h3>
-<p id="section-3.2-1">To enable XR traffic handling, a MOQ client should set up a MOQ connection through a MOQ relay providing this functionality. Discovery of such relay is out of scope of this document.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">The MOQ server is configured to send XR metadata with a media stream. Both MOQ server and client can include an "xr-handling" field in (respectively) publication and subscription messages, to indicate support for sending and receiving XR metadata. The catalog can also include an "xr-handling" field to indicate support for XR metadata for a track. [TBD: use a mechanism to agree on specific optional metadata to be sent - including whether optional fields are included, and whether release 19 fields are included]<a href="#section-3.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.2-3">Prior to sending a datagram, an endpoint determines the XR metadata applicable to a datagram, and, if applicable, add a datagram XR metadata header in the datagram. [TBD: the datagram XR metadata header should be placed after the MOQ header? Need to define a mechanism to extend the MOQ datagram header].<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2-4">Prior to sending a stream, an endpoint determines the XR metadata applicable to a stream, and, if applicable, add a stream XR metadata header in the stream. [TBD: the stream XR metadata header should be placed after the MOQ stream header? Need to define a mechanism to extend the MOQ stream header].<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">To enable XR traffic handling, a MoQ client should set up a MOQT connection through a MoQ relay providing this functionality. Discovery of such relay is out of scope of this document.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Both MoQ server and client exchange setup parameters including "3gpp-xr" and optionally "3gpp-xr-options", with values indicating the content of the XR metadata extension (section 2.3.1).<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">Prior to transmitting an object, an endpoint determines the XR metadata applicable to the object, and, if applicable, adds a XR metadata extension header into the object header.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-4">
+      <h2 id="name-iana-considerations">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA considerations</a>
+      </h2>
+<p id="section-4-1">TBD: registrations of an extension and setup parameters.<a href="#section-4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="_section-sec">
-<section id="section-4">
+<section id="section-5">
       <h2 id="name-security-considerations">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-4-1">To enable support for the feature described in this document, the application exposes metadata to a MOQ relay under the control of a network or service operator. End-to-end encrypted media is not exposed to the MOQ relay, so this is not seen as a high-risk exposure.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">To enable support for the feature described in this document, the application exposes metadata to a MoQ relay under the control of a network or service operator. End-to-end encrypted media is not exposed to the MoQ relay, so this is not seen as a high-risk exposure.<a href="#section-5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="acknowledgments">
-<section id="section-5">
+<section id="section-6">
       <h2 id="name-acknowledgments">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="section-5-1">Thanks to Srinivas Gudumasu, who was a contributor to the first revision of this draft. Thanks to Jaya Rao, Ghyslain Pelletier, John Kaippallimalil, Sri Gundavelli and Hang Shi for discussions and comments about this draft.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">Thanks to Srinivas Gudumasu, who was a contributor to the first revision of this draft. Thanks to Jaya Rao, Ghyslain Pelletier, John Kaippallimalil, Sri Gundavelli and Hang Shi for discussions and comments about this draft.<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-informative-references">
-<section id="section-6">
+<section id="section-7">
       <h2 id="name-informative-references">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
       </h2>
 <dl class="references">
 <dt id="I-D.draft-ietf-mops-ar-use-case">[I-D.draft-ietf-mops-ar-use-case]</dt>
