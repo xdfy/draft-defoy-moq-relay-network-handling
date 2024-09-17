@@ -11,26 +11,26 @@
 <meta content="
        This document describes a mechanism to convey information about media frames. The information is used for specific handling in functions such as error recovery and congestion handling. These functions can be critical to improve energy efficiency and network capacity in some (especially wireless) networks. Due to end-to-end encryption, MoQ relays are expected to extract the metadata required by these functions. This document aims to enable a level of wireless network support for MoQ equivalent to what is possible for RTP. 
     " name="description">
-<meta content="xml2rfc 3.23.0" name="generator">
+<meta content="xml2rfc 3.23.1" name="generator">
 <meta content="draft-defoy-moq-relay-network-handling-02" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.23.0
+  xml2rfc 3.23.1
     Python 3.10.12
     ConfigArgParse 1.7
-    google-i18n-address 3.1.0
+    google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.4
     lxml 4.9.4
-    platformdirs 4.2.2
+    platformdirs 4.3.3
     pycountry 24.6.1
-    pydyf 0.10.0
+    pydyf 0.9.0
     PyYAML 6.0.2
     requests 2.32.3
     setuptools 59.6.0
     wcwidth 0.2.13
     weasyprint 61.2
 -->
-<link href="/usr/src/app/tmp/3388ae2a-3fa3-45db-bdf6-702353ebd414/draft-defoy-moq-relay-network-handling-02.xml" rel="alternate" type="application/rfc+xml">
+<link href="/usr/src/app/tmp/e60647bf-eb1d-4063-b21b-b5ffce5c832f/draft-defoy-moq-relay-network-handling-02.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -1217,7 +1217,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">de Foy, et al.</td>
-<td class="center">Expires 13 March 2025</td>
+<td class="center">Expires 21 March 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1230,12 +1230,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-defoy-moq-relay-network-handling-02</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-09-09" class="published">9 September 2024</time>
+<time datetime="2024-09-17" class="published">17 September 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-03-13">13 March 2025</time></dd>
+<dd class="expires"><time datetime="2025-03-21">21 March 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1244,7 +1244,6 @@ li > p:last-of-type:only-child {
 </div>
 <div class="author">
       <div class="author-name">R. Krishna</div>
-<div class="org">InterDigital</div>
 </div>
 <div class="author">
       <div class="author-name">T. Jiang</div>
@@ -1277,7 +1276,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1330,7 +1329,7 @@ li > p:last-of-type:only-child {
                 <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-applying-xr-metadata-to-moq" class="internal xref">Applying XR Metadata to MOQT</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
-                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-xr-metadata-support-signall" class="internal xref">XR Metadata Support Signalling in Setup Messages</a></p>
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-signalling-of-xr-metadata-s" class="internal xref">Signalling of XR Metadata Support</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.2">
                     <p id="section-toc.1-1.2.2.2.2.2.1"><a href="#section-2.2.2" class="auto internal xref">2.2.2</a>.  <a href="#name-xr-metadata-in-moqt-datagra" class="internal xref">XR Metadata in MOQT Datagrams</a></p>
@@ -1506,35 +1505,39 @@ The wireless network performs differentiated handling of groups of data packets.
         <h3 id="name-applying-xr-metadata-to-moq">
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-applying-xr-metadata-to-moq" class="section-name selfRef">Applying XR Metadata to MOQT</a>
         </h3>
-<p id="section-2.2-1">In MOQT, XR metadata is transmitted in object headers. This document describes XR metadata in the MOQT protocol, as needed for Release 18 and 19 of 3GPP. The design approach is to derive the XR metadata from existing signalling, when possible, and explicitly signal XR metadata, as part of a MoQ extension, in other cases.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2-2"><em>NOTE: a MOQT extension mechanism is currently being defined in <a href="https://github.com/moq-wg/moq-transport/pull/502/files">https://github.com/moq-wg/moq-transport/pull/502/files</a>. This document will be updated to use this mechanism, once published.</em><a href="#section-2.2-2" class="pilcrow">¶</a></p>
-<div id="xr-metadata-support-signalling-in-setup-messages">
+<p id="section-2.2-1">In MOQT, XR metadata is transmitted in object headers. This document describes XR metadata in the MOQT protocol, as needed for Release 18 and 19 of 3GPP.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2"><em>NOTE: a MOQT extension mechanism is currently being defined in <a href="https://github.com/moq-wg/moq-transport/pull/502/files">https://github.com/moq-wg/moq-transport/pull/502/files</a>. This document follows this mechanism and might need be updated to use the final mechanism, once published.</em><a href="#section-2.2-2" class="pilcrow">¶</a></p>
+<div id="signalling-of-xr-metadata-support">
 <section id="section-2.2.1">
-          <h4 id="name-xr-metadata-support-signall">
-<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-xr-metadata-support-signall" class="section-name selfRef">XR Metadata Support Signalling in Setup Messages</a>
+          <h4 id="name-signalling-of-xr-metadata-s">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-signalling-of-xr-metadata-s" class="section-name selfRef">Signalling of XR Metadata Support</a>
           </h4>
-<p id="section-2.2.1-1">Explicit metadata is part of an extension indicated with the setup parameter "3gpp-xr", which may hold values of type varint:<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-2.2.1-2.1">
-              <p id="section-2.2.1-2.1.1">0x00: No XR metadata<a href="#section-2.2.1-2.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-2.2.1-2.2">
-              <p id="section-2.2.1-2.2.1">0x01: Release 18 XR metadata<a href="#section-2.2.1-2.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-2.2.1-2.3">
-              <p id="section-2.2.1-2.3.1">0x02: Release 19 XR metadata<a href="#section-2.2.1-2.3.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-2.2.1-3">An endpoint may indicate support for both sets of metadata using a value of 0x03.<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-4">The parameters PSSize and NPDS are optional and their support is indicated with the setup parameter "3gpp-xr-options", which may hold values of type varint:<a href="#section-2.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-1">This document registers an integer extension header type named "xr-metadata".<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-2">The REQUESTED-EXTENSION parameter (key 0x02), if present in the CLIENT_SETUP and SERVER_SETUP message, will include the varint corresponding to the "xr-metadata" extension header type, if the client and server intend to use the "xr-metadata" extension header.<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-3">This document registers a setup parameter XR-METADATA, which can be present in the CLIENT_SETUP and SERVER_SETUP to indicate support for specific sets of XR metadata. The XR-METADATA parameter holds a value which is the concatenation of two varints:<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-4">The first varint identifies the supported set of XR metadata:<a href="#section-2.2.1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.1-5.1">
-              <p id="section-2.2.1-5.1.1">0x00: No optional parameters<a href="#section-2.2.1-5.1.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.1-5.1.1">0x00: No XR metadata.<a href="#section-2.2.1-5.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-2.2.1-5.2">
-              <p id="section-2.2.1-5.2.1">0x01: PSSize and NPDS parameters are included<a href="#section-2.2.1-5.2.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.1-5.2.1">0x01: Release 18 XR metadata.<a href="#section-2.2.1-5.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.1-5.3">
+              <p id="section-2.2.1-5.3.1">0x02: Release 19 XR metadata.<a href="#section-2.2.1-5.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
+<p id="section-2.2.1-6">An endpoint may indicate support for both sets of metadata using a value of 0x03.<a href="#section-2.2.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-7">The second varint identifies optional metadata:<a href="#section-2.2.1-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2.1-8.1">
+              <p id="section-2.2.1-8.1.1">0x00: No optional metadata. This value must be used if the first varint indicates no XR metadata.<a href="#section-2.2.1-8.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2.2.1-8.2">
+              <p id="section-2.2.1-8.2.1">0x01: PSSize and NPDS metadata are included. This may be used with Release 18 or 19 XR metadata.<a href="#section-2.2.1-8.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-2.2.1-9">The client can include an XR-METADATA parameter in CLIENT_SETUP, to request the server to send XR metadata, and to indicate supported XR metadata sets and options. The server can include an XR-METADATA parameter in the SERVER_SETUP, to indicate its intent to send XR metadata, and to indicate the XR metadata set and option.<a href="#section-2.2.1-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="xr-metadata-in-moqt-datagrams">
@@ -1554,37 +1557,39 @@ The wireless network performs differentiated handling of groups of data packets.
                   <p id="section-2.2.2-2.1.2.2.1">D (1)<a href="#section-2.2.2-2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-2.2.2-2.1.2.3">
-                  <p id="section-2.2.2-2.1.2.3.1">PSSN (10)<a href="#section-2.2.2-2.1.2.3.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.2-2.1.2.3.1">PSI (4)<a href="#section-2.2.2-2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-2.2.2-2.1.2.4">
-                  <p id="section-2.2.2-2.1.2.4.1">PSN (6)<a href="#section-2.2.2-2.1.2.4.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.2-2.1.2.4.1">PSSN (10)<a href="#section-2.2.2-2.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.2-2.1.2.5">
+                  <p id="section-2.2.2-2.1.2.5.1">PSN (6)<a href="#section-2.2.2-2.1.2.5.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
             <li class="normal" id="section-2.2.2-2.2">
-              <p id="section-2.2.2-2.2.1">When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set, the following fields are present in some objects.<a href="#section-2.2.2-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.2-2.2.1">When 3gpp-xr bit 1 is set, the following fields are present in some objects.<a href="#section-2.2.2-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.2-2.2.2.1">
-                  <p id="section-2.2.2-2.2.2.1.1">PSSize (24)<a href="#section-2.2.2-2.2.2.1.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.2-2.2.2.1.1">BSize (size TBD)<a href="#section-2.2.2-2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-2.2.2-2.2.2.2">
-                  <p id="section-2.2.2-2.2.2.2.1">NPDS (16)<a href="#section-2.2.2-2.2.2.2.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.2-2.2.2.2.1">TTNB (size TBD)<a href="#section-2.2.2-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
             <li class="normal" id="section-2.2.2-2.3">
-              <p id="section-2.2.2-2.3.1">When 3gpp-xr bit 1 is set, the following fields are present in some objects.<a href="#section-2.2.2-2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.2-2.3.1">When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set, the following fields are present in some objects.<a href="#section-2.2.2-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.2-2.3.2.1">
-                  <p id="section-2.2.2-2.3.2.1.1">BSize (size TBD)<a href="#section-2.2.2-2.3.2.1.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.2-2.3.2.1.1">PSSize (24)<a href="#section-2.2.2-2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-2.2.2-2.3.2.2">
-                  <p id="section-2.2.2-2.3.2.2.1">TTNB (size TBD)<a href="#section-2.2.2-2.3.2.2.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.2-2.3.2.2.1">NPDS (16)<a href="#section-2.2.2-2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
           </ul>
-<p id="section-2.2.2-3">PSI is not included and can be derived from the publisher's priority field of the MOQT object metadata.<a href="#section-2.2.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="xr-metadata-in-moqt-streams">
@@ -1601,34 +1606,37 @@ The wireless network performs differentiated handling of groups of data packets.
                   <p id="section-2.2.3-2.1.2.1.1">D (1)<a href="#section-2.2.3-2.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-2.2.3-2.1.2.2">
-                  <p id="section-2.2.3-2.1.2.2.1">PSSN (10)<a href="#section-2.2.3-2.1.2.2.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.3-2.1.2.2.1">PSI (4)<a href="#section-2.2.3-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+                <li class="normal" id="section-2.2.3-2.1.2.3">
+                  <p id="section-2.2.3-2.1.2.3.1">PSSN (10)<a href="#section-2.2.3-2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
             <li class="normal" id="section-2.2.3-2.2">
-              <p id="section-2.2.3-2.2.1">When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set, the following fields are present in every objects.<a href="#section-2.2.3-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.3-2.2.1">When 3gpp-xr bit 1 is set, the following fields are present in some objects.<a href="#section-2.2.3-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.3-2.2.2.1">
-                  <p id="section-2.2.3-2.2.2.1.1">PSSize (24)<a href="#section-2.2.3-2.2.2.1.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.3-2.2.2.1.1">BSize (size TBD)<a href="#section-2.2.3-2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-2.2.3-2.2.2.2">
-                  <p id="section-2.2.3-2.2.2.2.1">NPDS (16)<a href="#section-2.2.3-2.2.2.2.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.3-2.2.2.2.1">TTNB (size TBD)<a href="#section-2.2.3-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
             <li class="normal" id="section-2.2.3-2.3">
-              <p id="section-2.2.3-2.3.1">When 3gpp-xr bit 1 is set, the following fields are present in some objects.<a href="#section-2.2.3-2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-2.2.3-2.3.1">When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set, the following fields are present in every objects.<a href="#section-2.2.3-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.3-2.3.2.1">
-                  <p id="section-2.2.3-2.3.2.1.1">BSize (size TBD)<a href="#section-2.2.3-2.3.2.1.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.3-2.3.2.1.1">PSSize (24)<a href="#section-2.2.3-2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-2.2.3-2.3.2.2">
-                  <p id="section-2.2.3-2.3.2.2.1">TTNB (size TBD)<a href="#section-2.2.3-2.3.2.2.1" class="pilcrow">¶</a></p>
+                  <p id="section-2.2.3-2.3.2.2.1">NPDS (16)<a href="#section-2.2.3-2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
           </ul>
-<p id="section-2.2.3-3">PSI is not included and can be derived from the publisher's priority field of the MOQT object metadata. E and PSN are not included and can be derived from QUIC signalling.<a href="#section-2.2.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.3-3">E and PSN are not included and can be derived from QUIC signalling.<a href="#section-2.2.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1649,13 +1657,10 @@ The wireless network performs differentiated handling of groups of data packets.
 <p id="section-3.1-2">The relay obtains the PDU set XR metadata from the object XR header, and<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-3.1">
-            <p id="section-3.1-3.1.1">PSI (4 bits) is derived from the publisher's priority (8 bits). To faciliate the mapping, it is recommended for the publisher to only use the 4 lower bits of the publisher's priority, and set the higher 4 bits to zero.<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.1.1">When objects are transported in MOQT streams, E is derived from the FIN flag of the QUIC stream<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-3.2">
-            <p id="section-3.1-3.2.1">When objects are transported in MOQT streams, E is derived from the FIN flag of the QUIC stream<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.1-3.3">
-            <p id="section-3.1-3.3.1">When objects are transported in MOQT streams, PSN is generated based on the QUIC/UDP/IP packets received in order of STREAM frame offset. In case there are missing packets, the relay can use the STREAM frame offset and path MTU to determine the sequence number of a packet received after one or more missing packets.<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.2.1">When objects are transported in MOQT streams, PSN is generated based on the QUIC/UDP/IP packets received in order of STREAM frame offset. In case there are missing packets, the relay can use the STREAM frame offset and path MTU to determine the sequence number of a packet received after one or more missing packets.<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.1-4">The relay transmits the PDU set XR metadata along with each IP packet, to the radio access network, which uses them to apply XR traffic handling.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
@@ -1667,7 +1672,7 @@ The wireless network performs differentiated handling of groups of data packets.
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-endpoint-behavior" class="section-name selfRef">Endpoint Behavior</a>
         </h3>
 <p id="section-3.2-1">To enable XR traffic handling, a MoQ client should set up a MOQT connection through a MoQ relay providing this functionality. Discovery of such relay is out of scope of this document.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">Both MoQ server and client exchange setup parameters including "3gpp-xr" and optionally "3gpp-xr-options", with values indicating the content of the XR metadata extension (section 2.3.1).<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Both MoQ server and client exchange setup parameters including REQUESTED-EXTENSION and XR-METADATA, with values indicating the content of the XR metadata extension (section 2.3.1).<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 <p id="section-3.2-3">Prior to transmitting an object, an endpoint determines the XR metadata applicable to the object, and, if applicable, adds a XR metadata extension header into the object header.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1678,7 +1683,7 @@ The wireless network performs differentiated handling of groups of data packets.
       <h2 id="name-iana-considerations">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA considerations</a>
       </h2>
-<p id="section-4-1">TBD: registrations of an extension and setup parameters.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">TBD: registrations of the xr-metadata header extension and XR-PARAMETER setup parameter.<a href="#section-4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="_section-sec">
@@ -1807,11 +1812,10 @@ The wireless network performs differentiated handling of groups of data packets.
 </address>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Renan Krishna</span></div>
-<div dir="auto" class="left"><span class="org">InterDigital</span></div>
-<div dir="auto" class="left"><span class="country-name">Canada</span></div>
+<div dir="auto" class="left"><span class="country-name">United Kingdom</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:renan.krishna@interdigital.com" class="email">renan.krishna@interdigital.com</a>
+<a href="mailto:renan.krishna@gmail.com" class="email">renan.krishna@gmail.com</a>
 </div>
 </address>
 <address class="vcard">

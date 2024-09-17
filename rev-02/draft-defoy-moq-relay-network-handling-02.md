@@ -22,9 +22,8 @@ author:
   -
     ins: R. Krishna
     name: Renan Krishna
-    org: InterDigital
-    email: renan.krishna@interdigital.com
-    country: Canada
+    email: renan.krishna@gmail.com
+    country: United Kingdom
   -
     ins: T. Jiang
     name: Tianji Jiang
@@ -134,26 +133,33 @@ The optional header extension fields are included subjects to an SDP signaling o
 
 ## Applying XR Metadata to MOQT
 
-In MOQT, XR metadata is transmitted in object headers. This document describes XR metadata in the MOQT protocol, as needed for Release 18 and 19 of 3GPP. The design approach is to derive the XR metadata from existing signalling, when possible, and explicitly signal XR metadata, as part of a MoQ extension, in other cases.
+In MOQT, XR metadata is transmitted in object headers. This document describes XR metadata in the MOQT protocol, as needed for Release 18 and 19 of 3GPP.
 
-*NOTE: a MOQT extension mechanism is currently being defined in <https://github.com/moq-wg/moq-transport/pull/502/files>. This document will be updated to use this mechanism, once published.*
+*NOTE: a MOQT extension mechanism is currently being defined in <https://github.com/moq-wg/moq-transport/pull/502/files>. This document follows this mechanism and might need be updated to use the final mechanism, once published.*
 
 
-### XR Metadata Support Signalling in Setup Messages
+### Signalling of XR Metadata Support
 
-Explicit metadata is part of an extension indicated with the setup parameter "3gpp-xr", which may hold values of type varint:
+This document registers an integer extension header type named "xr-metadata". 
 
-- 0x00: No XR metadata
-- 0x01: Release 18 XR metadata
-- 0x02: Release 19 XR metadata
+The REQUESTED-EXTENSION parameter (key 0x02), if present in the CLIENT_SETUP and SERVER_SETUP message, will include the varint corresponding to the "xr-metadata" extension header type, if the client and server intend to use the "xr-metadata" extension header.
+
+This document registers a setup parameter XR-METADATA, which can be present in the CLIENT_SETUP and SERVER_SETUP to indicate support for specific sets of XR metadata. The XR-METADATA parameter holds a value which is the concatenation of two varints:
+
+The first varint identifies the supported set of XR metadata:
+
+- 0x00: No XR metadata.
+- 0x01: Release 18 XR metadata.
+- 0x02: Release 19 XR metadata.
 
 An endpoint may indicate support for both sets of metadata using a value of 0x03.
 
-The parameters PSSize and NPDS are optional and their support is indicated with the setup parameter "3gpp-xr-options", which may hold values of type varint:
+The second varint identifies optional metadata:
 
-- 0x00: No optional parameters
-- 0x01: PSSize and NPDS parameters are included
+- 0x00: No optional metadata. This value must be used if the first varint indicates no XR metadata.
+- 0x01: PSSize and NPDS metadata are included. This may be used with Release 18 or 19 XR metadata.
 
+The client can include an XR-METADATA parameter in CLIENT_SETUP, to request the server to send XR metadata, and to indicate supported XR metadata sets and options. The server can include an XR-METADATA parameter in the SERVER_SETUP, to indicate its intent to send XR metadata, and to indicate the XR metadata set and option.
 
 ### XR Metadata in MOQT Datagrams
 
@@ -162,16 +168,15 @@ When using MOQ in datagram mode, the object XR header includes the following fie
 - When 3gpp-xr bit 0 or 1 is set, the following fields are present in every object.
    - E (1)
    - D (1)
+   - PSI (4)
    - PSSN (10)
    - PSN (6)
-- When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set, the following fields are present in some objects.
-   - PSSize (24)
-   - NPDS (16)
 - When 3gpp-xr bit 1 is set, the following fields are present in some objects. 
    - BSize (size TBD) 
    - TTNB (size TBD) 
-
-PSI is not included and can be derived from the publisher's priority field of the MOQT object metadata.
+- When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set, the following fields are present in some objects.
+   - PSSize (24)
+   - NPDS (16)
 
 
 ### XR Metadata in MOQT Streams
@@ -180,15 +185,16 @@ When using MOQT in stream mode, the object XR header includes the following fiel
 
 - When 3gpp-xr bit 0 or 1 is set, the following fields are present in every object.
    - D (1)
+   - PSI (4)
    - PSSN (10)
-- When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set, the following fields are present in every objects.
-   - PSSize (24)
-   - NPDS (16)
 - When 3gpp-xr bit 1 is set, the following fields are present in some objects. 
    - BSize (size TBD) 
    - TTNB (size TBD) 
+- When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set, the following fields are present in every objects.
+   - PSSize (24)
+   - NPDS (16)
 
-PSI is not included and can be derived from the publisher's priority field of the MOQT object metadata. E and PSN are not included and can be derived from QUIC signalling.
+E and PSN are not included and can be derived from QUIC signalling.
 
 
 # Traffic Handling of High-Throughput Low-Latency Traffic {#section-xr-handling}
@@ -199,7 +205,6 @@ A MoQ relay at the ingress point of a wireless network extracts metadata associa
 
 The relay obtains the PDU set XR metadata from the object XR header, and
 
-- PSI (4 bits) is derived from the publisher's priority (8 bits). To faciliate the mapping, it is recommended for the publisher to only use the 4 lower bits of the publisher's priority, and set the higher 4 bits to zero.
 - When objects are transported in MOQT streams, E is derived from the FIN flag of the QUIC stream
 - When objects are transported in MOQT streams, PSN is generated based on the QUIC/UDP/IP packets received in order of STREAM frame offset. In case there are missing packets, the relay can use the STREAM frame offset and path MTU to determine the sequence number of a packet received after one or more missing packets.
 
@@ -209,14 +214,14 @@ The relay transmits the PDU set XR metadata along with each IP packet, to the ra
 
 To enable XR traffic handling, a MoQ client should set up a MOQT connection through a MoQ relay providing this functionality. Discovery of such relay is out of scope of this document.
 
-Both MoQ server and client exchange setup parameters including "3gpp-xr" and optionally "3gpp-xr-options", with values indicating the content of the XR metadata extension (section 2.3.1).
+Both MoQ server and client exchange setup parameters including REQUESTED-EXTENSION and XR-METADATA, with values indicating the content of the XR metadata extension (section 2.3.1).
 
 Prior to transmitting an object, an endpoint determines the XR metadata applicable to the object, and, if applicable, adds a XR metadata extension header into the object header. 
 
 
 # IANA considerations
 
-TBD: registrations of an extension and setup parameters.
+TBD: registrations of the xr-metadata header extension and XR-PARAMETER setup parameter.
 
 
 # Security Considerations {#section-sec}

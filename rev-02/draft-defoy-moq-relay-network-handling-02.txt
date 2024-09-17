@@ -3,11 +3,12 @@
 
 
 MOQ                                                            X. de Foy
-Internet-Draft                                                R. Krishna
-Intended status: Standards Track                            InterDigital
-Expires: 13 March 2025                                          T. Jiang
+Internet-Draft                                              InterDigital
+Intended status: Standards Track                              R. Krishna
+Expires: 21 March 2025                                                  
+                                                                T. Jiang
                                                             China Mobile
-                                                        9 September 2024
+                                                       17 September 2024
 
 
   MoQ relays for Support of High-Throughput Low-Latency Traffic in 5G
@@ -39,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 March 2025.
+   This Internet-Draft will expire on 21 March 2025.
 
 Copyright Notice
 
@@ -49,15 +50,15 @@ Copyright Notice
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents (https://trustee.ietf.org/
    license-info) in effect on the date of publication of this document.
-   Please review these documents carefully, as they describe your rights
 
 
 
-de Foy, et al.            Expires 13 March 2025                 [Page 1]
+de Foy, et al.            Expires 21 March 2025                 [Page 1]
 
 Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 
+   Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
    extracted from this document must include Revised BSD License text as
    described in Section 4.e of the Trust Legal Provisions and are
@@ -73,21 +74,21 @@ Table of Contents
    2.  XR Metadata for 5G  . . . . . . . . . . . . . . . . . . . . .   4
      2.1.  XR Metadata for PDU Sets  . . . . . . . . . . . . . . . .   4
      2.2.  Applying XR Metadata to MOQT  . . . . . . . . . . . . . .   5
-       2.2.1.  XR Metadata Support Signalling in Setup Messages  . .   6
+       2.2.1.  Signalling of XR Metadata Support . . . . . . . . . .   6
        2.2.2.  XR Metadata in MOQT Datagrams . . . . . . . . . . . .   6
        2.2.3.  XR Metadata in MOQT Streams . . . . . . . . . . . . .   7
-   3.  Traffic Handling of High-Throughput Low-Latency Traffic . . .   7
-     3.1.  MoQ relay Behavior  . . . . . . . . . . . . . . . . . . .   7
+   3.  Traffic Handling of High-Throughput Low-Latency Traffic . . .   8
+     3.1.  MoQ relay Behavior  . . . . . . . . . . . . . . . . . . .   8
      3.2.  Endpoint Behavior . . . . . . . . . . . . . . . . . . . .   8
    4.  IANA considerations . . . . . . . . . . . . . . . . . . . . .   8
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    6.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   9
    7.  Informative References  . . . . . . . . . . . . . . . . . . .   9
    Appendix A.  XR RTP Header Extension for XR Traffic Handling in 5G
-           Networks  . . . . . . . . . . . . . . . . . . . . . . . .   9
+           Networks  . . . . . . . . . . . . . . . . . . . . . . . .  10
      A.1.  Release 18 XR Metadata  . . . . . . . . . . . . . . . . .  10
      A.2.  Release 19 XR Metadata  . . . . . . . . . . . . . . . . .  11
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
 
 1.  Introduction
 
@@ -105,14 +106,15 @@ Table of Contents
    relay can be used at the ingress point of the wireless network
    (Section 1.3).
 
-   The rest of this document is structured as follows:
 
 
 
-de Foy, et al.            Expires 13 March 2025                 [Page 2]
+de Foy, et al.            Expires 21 March 2025                 [Page 2]
 
 Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
+
+   The rest of this document is structured as follows:
 
    *  Section 2 describes XR metadata for MoQ, based on what is
       currently defined by 3GPP for RTP.
@@ -163,9 +165,7 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 
 
-
-
-de Foy, et al.            Expires 13 March 2025                 [Page 3]
+de Foy, et al.            Expires 21 March 2025                 [Page 3]
 
 Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
@@ -221,7 +221,7 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 
 
-de Foy, et al.            Expires 13 March 2025                 [Page 4]
+de Foy, et al.            Expires 21 March 2025                 [Page 4]
 
 Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
@@ -266,43 +266,61 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
    In MOQT, XR metadata is transmitted in object headers.  This document
    describes XR metadata in the MOQT protocol, as needed for Release 18
-   and 19 of 3GPP.  The design approach is to derive the XR metadata
-   from existing signalling, when possible, and explicitly signal XR
-   metadata, as part of a MoQ extension, in other cases.
+   and 19 of 3GPP.
 
    _NOTE: a MOQT extension mechanism is currently being defined in
    https://github.com/moq-wg/moq-transport/pull/502/files
    (https://github.com/moq-wg/moq-transport/pull/502/files).  This
-   document will be updated to use this mechanism, once published._
+   document follows this mechanism and might need be updated to use the
+   final mechanism, once published._
 
 
 
-de Foy, et al.            Expires 13 March 2025                 [Page 5]
+
+de Foy, et al.            Expires 21 March 2025                 [Page 5]
 
 Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 
-2.2.1.  XR Metadata Support Signalling in Setup Messages
+2.2.1.  Signalling of XR Metadata Support
 
-   Explicit metadata is part of an extension indicated with the setup
-   parameter "3gpp-xr", which may hold values of type varint:
+   This document registers an integer extension header type named "xr-
+   metadata".
 
-   *  0x00: No XR metadata
+   The REQUESTED-EXTENSION parameter (key 0x02), if present in the
+   CLIENT_SETUP and SERVER_SETUP message, will include the varint
+   corresponding to the "xr-metadata" extension header type, if the
+   client and server intend to use the "xr-metadata" extension header.
 
-   *  0x01: Release 18 XR metadata
+   This document registers a setup parameter XR-METADATA, which can be
+   present in the CLIENT_SETUP and SERVER_SETUP to indicate support for
+   specific sets of XR metadata.  The XR-METADATA parameter holds a
+   value which is the concatenation of two varints:
 
-   *  0x02: Release 19 XR metadata
+   The first varint identifies the supported set of XR metadata:
+
+   *  0x00: No XR metadata.
+
+   *  0x01: Release 18 XR metadata.
+
+   *  0x02: Release 19 XR metadata.
 
    An endpoint may indicate support for both sets of metadata using a
    value of 0x03.
 
-   The parameters PSSize and NPDS are optional and their support is
-   indicated with the setup parameter "3gpp-xr-options", which may hold
-   values of type varint:
+   The second varint identifies optional metadata:
 
-   *  0x00: No optional parameters
+   *  0x00: No optional metadata.  This value must be used if the first
+      varint indicates no XR metadata.
 
-   *  0x01: PSSize and NPDS parameters are included
+   *  0x01: PSSize and NPDS metadata are included.  This may be used
+      with Release 18 or 19 XR metadata.
+
+   The client can include an XR-METADATA parameter in CLIENT_SETUP, to
+   request the server to send XR metadata, and to indicate supported XR
+   metadata sets and options.  The server can include an XR-METADATA
+   parameter in the SERVER_SETUP, to indicate its intent to send XR
+   metadata, and to indicate the XR metadata set and option.
 
 2.2.2.  XR Metadata in MOQT Datagrams
 
@@ -312,13 +330,30 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
    *  When 3gpp-xr bit 0 or 1 is set, the following fields are present
       in every object.
 
+
+
+
+de Foy, et al.            Expires 21 March 2025                 [Page 6]
+
+Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+
+
       -  E (1)
 
       -  D (1)
 
+      -  PSI (4)
+
       -  PSSN (10)
 
       -  PSN (6)
+
+   *  When 3gpp-xr bit 1 is set, the following fields are present in
+      some objects.
+
+      -  BSize (size TBD)
+
+      -  TTNB (size TBD)
 
    *  When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set,
       the following fields are present in some objects.
@@ -326,24 +361,6 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
       -  PSSize (24)
 
       -  NPDS (16)
-
-   *  When 3gpp-xr bit 1 is set, the following fields are present in
-      some objects.
-
-
-
-
-de Foy, et al.            Expires 13 March 2025                 [Page 6]
-
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
-
-
-      -  BSize (size TBD)
-
-      -  TTNB (size TBD)
-
-   PSI is not included and can be derived from the publisher's priority
-   field of the MOQT object metadata.
 
 2.2.3.  XR Metadata in MOQT Streams
 
@@ -355,14 +372,9 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
       -  D (1)
 
+      -  PSI (4)
+
       -  PSSN (10)
-
-   *  When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set,
-      the following fields are present in every objects.
-
-      -  PSSize (24)
-
-      -  NPDS (16)
 
    *  When 3gpp-xr bit 1 is set, the following fields are present in
       some objects.
@@ -371,9 +383,22 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
       -  TTNB (size TBD)
 
-   PSI is not included and can be derived from the publisher's priority
-   field of the MOQT object metadata.  E and PSN are not included and
-   can be derived from QUIC signalling.
+   *  When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set,
+      the following fields are present in every objects.
+
+
+
+
+de Foy, et al.            Expires 21 March 2025                 [Page 7]
+
+Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+
+
+      -  PSSize (24)
+
+      -  NPDS (16)
+
+   E and PSN are not included and can be derived from QUIC signalling.
 
 3.  Traffic Handling of High-Throughput Low-Latency Traffic
 
@@ -384,20 +409,6 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
    The relay obtains the PDU set XR metadata from the object XR header,
    and
-
-
-
-
-
-de Foy, et al.            Expires 13 March 2025                 [Page 7]
-
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
-
-
-   *  PSI (4 bits) is derived from the publisher's priority (8 bits).
-      To faciliate the mapping, it is recommended for the publisher to
-      only use the 4 lower bits of the publisher's priority, and set the
-      higher 4 bits to zero.
 
    *  When objects are transported in MOQT streams, E is derived from
       the FIN flag of the QUIC stream
@@ -418,8 +429,8 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
    connection through a MoQ relay providing this functionality.
    Discovery of such relay is out of scope of this document.
 
-   Both MoQ server and client exchange setup parameters including "3gpp-
-   xr" and optionally "3gpp-xr-options", with values indicating the
+   Both MoQ server and client exchange setup parameters including
+   REQUESTED-EXTENSION and XR-METADATA, with values indicating the
    content of the XR metadata extension (section 2.3.1).
 
    Prior to transmitting an object, an endpoint determines the XR
@@ -428,7 +439,16 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 4.  IANA considerations
 
-   TBD: registrations of an extension and setup parameters.
+   TBD: registrations of the xr-metadata header extension and XR-
+   PARAMETER setup parameter.
+
+
+
+
+de Foy, et al.            Expires 21 March 2025                 [Page 8]
+
+Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+
 
 5.  Security Considerations
 
@@ -437,18 +457,6 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
    network or service operator.  End-to-end encrypted media is not
    exposed to the MoQ relay, so this is not seen as a high-risk
    exposure.
-
-
-
-
-
-
-
-
-de Foy, et al.            Expires 13 March 2025                 [Page 8]
-
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
-
 
 6.  Acknowledgments
 
@@ -486,25 +494,24 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
               Configurations", 3GPP, 2024, <www.3gpp.org/
               dynareport/26522.htm>.
 
+
+
+
+
+
+
+
+de Foy, et al.            Expires 21 March 2025                 [Page 9]
+
+Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+
+
 Appendix A.  XR RTP Header Extension for XR Traffic Handling in 5G
              Networks
 
    3GPP defined an RTP header extensions for PDU set marking, in
    [TS26.522], which enables a media sender to indicate PDU set metadata
    in each RTP packet.
-
-
-
-
-
-
-
-
-
-de Foy, et al.            Expires 13 March 2025                 [Page 9]
-
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
-
 
 A.1.  Release 18 XR Metadata
 
@@ -546,6 +553,15 @@ A.1.  Release 18 XR Metadata
       monotonically for every PDU in the PDU Set in the order of
       transmission from the sender.
 
+
+
+
+
+de Foy, et al.            Expires 21 March 2025                [Page 10]
+
+Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+
+
    NOTE: A receiver may use the RTP packet sequence number together with
    the PSN to distinguish between PDUs within a PDU Set that contains
    more than 64 PDUs.
@@ -554,14 +570,6 @@ A.1.  Release 18 XR Metadata
       total size of all PDUs of the PDU Set to which this PDU belongs.
       This field is optional and subject to an SDP signaling offer/
       answer negotiation, where the RTP sender shall indicate whether it
-
-
-
-de Foy, et al.            Expires 13 March 2025                [Page 10]
-
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
-
-
       will provide the size of the PDU Set for that RTP stream.  If not
       enabled, the field shall not be present within the RTP HE.  If
       enabled, but the RTP sender is not able to determine the PDU Set
@@ -602,6 +610,14 @@ A.2.  Release 19 XR Metadata
    *  *Time-to-next-burst [TTNB]*: this field describes the time between
       the end of the present burst and the beginning of the next burst.
 
+
+
+
+de Foy, et al.            Expires 21 March 2025                [Page 11]
+
+Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+
+
 Authors' Addresses
 
    Xavier de Foy
@@ -610,18 +626,9 @@ Authors' Addresses
    Email: xavier.defoy@interdigital.com
 
 
-
-
-
-de Foy, et al.            Expires 13 March 2025                [Page 11]
-
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
-
-
    Renan Krishna
-   InterDigital
-   Canada
-   Email: renan.krishna@interdigital.com
+   United Kingdom
+   Email: renan.krishna@gmail.com
 
 
    Tianji Jiang
@@ -662,11 +669,4 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 
 
-
-
-
-
-
-
-
-de Foy, et al.            Expires 13 March 2025                [Page 12]
+de Foy, et al.            Expires 21 March 2025                [Page 12]
