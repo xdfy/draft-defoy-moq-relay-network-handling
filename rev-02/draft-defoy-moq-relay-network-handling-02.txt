@@ -5,10 +5,10 @@
 MOQ                                                            X. de Foy
 Internet-Draft                                              InterDigital
 Intended status: Standards Track                              R. Krishna
-Expires: 21 March 2025                                                  
+Expires: 10 April 2025                                                  
                                                                 T. Jiang
                                                             China Mobile
-                                                       17 September 2024
+                                                          7 October 2024
 
 
   MoQ relays for Support of High-Throughput Low-Latency Traffic in 5G
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 March 2025.
+   This Internet-Draft will expire on 10 April 2025.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-de Foy, et al.            Expires 21 March 2025                 [Page 1]
+de Foy, et al.            Expires 10 April 2025                 [Page 1]
 
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
 
 
    Please review these documents carefully, as they describe your rights
@@ -80,7 +80,7 @@ Table of Contents
    3.  Traffic Handling of High-Throughput Low-Latency Traffic . . .   8
      3.1.  MoQ relay Behavior  . . . . . . . . . . . . . . . . . . .   8
      3.2.  Endpoint Behavior . . . . . . . . . . . . . . . . . . . .   8
-   4.  IANA considerations . . . . . . . . . . . . . . . . . . . . .   8
+   4.  IANA considerations . . . . . . . . . . . . . . . . . . . . .   9
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    6.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   9
    7.  Informative References  . . . . . . . . . . . . . . . . . . .   9
@@ -98,9 +98,9 @@ Table of Contents
    [I-D.draft-ietf-mops-ar-use-case]).  Wireless networks implement
    techniques to improve network capacity and energy efficiency, as well
    as reduce the impact of packet losses on users' quality of experience
-   (Section 1.1).  An extension to the RTP protocol has been defined,
-   which enables metadata associated with application data units to be
-   identified at the ingress point of the wireless network
+   (Section 1.1).  An extension to the RTP protocol [TS26.522] has been
+   defined, which enables metadata associated with application data
+   units to be identified at the ingress point of the wireless network
    (Section 1.2).  To enable a similar operation with the MoQ protocol
    [I-D.draft-ietf-moq-transport], this document describes how a MoQ
    relay can be used at the ingress point of the wireless network
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-de Foy, et al.            Expires 21 March 2025                 [Page 2]
+de Foy, et al.            Expires 10 April 2025                 [Page 2]
 
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
 
 
    The rest of this document is structured as follows:
@@ -165,9 +165,9 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 
 
-de Foy, et al.            Expires 21 March 2025                 [Page 3]
+de Foy, et al.            Expires 10 April 2025                 [Page 3]
 
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
 
 
 1.3.  Identifying XR Metadata in MOQ flows
@@ -221,9 +221,9 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 
 
-de Foy, et al.            Expires 21 March 2025                 [Page 4]
+de Foy, et al.            Expires 10 April 2025                 [Page 4]
 
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
 
 
       -  The _end PDU of PDU set_ (*E*, 1 bit) indicates the last PDU of
@@ -277,27 +277,29 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 
 
-de Foy, et al.            Expires 21 March 2025                 [Page 5]
+de Foy, et al.            Expires 10 April 2025                 [Page 5]
 
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
 
 
 2.2.1.  Signalling of XR Metadata Support
 
-   This document registers an integer extension header type named "xr-
-   metadata".
+   This document will register with IANA an integer MoQ Extension Header
+   type named "xr-metadata".
 
    The REQUESTED-EXTENSION parameter (key 0x02), if present in the
-   CLIENT_SETUP and SERVER_SETUP message, will include the varint
-   corresponding to the "xr-metadata" extension header type, if the
+   CLIENT_SETUP and SERVER_SETUP message, will include the value
+   corresponding to the "xr-metadata" MoQ extension header type, if the
    client and server intend to use the "xr-metadata" extension header.
 
-   This document registers a setup parameter XR-METADATA, which can be
-   present in the CLIENT_SETUP and SERVER_SETUP to indicate support for
+   This document will register with IANA a new setup parameter XR-
+   METADATA that is associated with the "xr-metadata" MoQ extension
+   header type.  The XR-METADATA parameter indicates the support for
    specific sets of XR metadata.  The XR-METADATA parameter holds a
    value which is the concatenation of two varints:
 
-   The first varint identifies the supported set of XR metadata:
+   The first varint, named '3gpp-xr', identifies the supported set of XR
+   metadata:
 
    *  0x00: No XR metadata.
 
@@ -308,7 +310,8 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
    An endpoint may indicate support for both sets of metadata using a
    value of 0x03.
 
-   The second varint identifies optional metadata:
+   The second varint, named '3gpp-xr-options', identifies optional
+   metadata:
 
    *  0x00: No optional metadata.  This value must be used if the first
       varint indicates no XR metadata.
@@ -324,19 +327,19 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 2.2.2.  XR Metadata in MOQT Datagrams
 
-   When using MOQ in datagram mode, the object XR header includes the
-   following fields.
+   When sending MOQ objects in datagrams, the object XR header includes
+   the following fields.
+
+
+
+
+de Foy, et al.            Expires 10 April 2025                 [Page 6]
+
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
+
 
    *  When 3gpp-xr bit 0 or 1 is set, the following fields are present
       in every object.
-
-
-
-
-de Foy, et al.            Expires 21 March 2025                 [Page 6]
-
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
-
 
       -  E (1)
 
@@ -364,8 +367,8 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 2.2.3.  XR Metadata in MOQT Streams
 
-   When using MOQT in stream mode, the object XR header includes the
-   following fields.
+   When sending MOQ objects in streams, the object XR header includes
+   the following fields.
 
    *  When 3gpp-xr bit 0 or 1 is set, the following fields are present
       in every object.
@@ -383,16 +386,16 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
       -  TTNB (size TBD)
 
+
+
+
+de Foy, et al.            Expires 10 April 2025                 [Page 7]
+
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
+
+
    *  When 3gpp-xr bit 0 or 1 is set, and 3gpp-xr-options bit 0 is set,
       the following fields are present in every objects.
-
-
-
-
-de Foy, et al.            Expires 21 March 2025                 [Page 7]
-
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
-
 
       -  PSSize (24)
 
@@ -429,26 +432,28 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
    connection through a MoQ relay providing this functionality.
    Discovery of such relay is out of scope of this document.
 
-   Both MoQ server and client exchange setup parameters including
-   REQUESTED-EXTENSION and XR-METADATA, with values indicating the
-   content of the XR metadata extension (section 2.3.1).
+   Both MoQ server and client exchange the setup parameter REQUESTED-
+   EXTENSION including a varint indicating usage of the 'xr-metadata'
+   MoQ extension header type, and the setup parameter XR-METADATA with a
+   value indicating the content of the XR metadata extension (as
+   described in Section 2.2.1).
 
    Prior to transmitting an object, an endpoint determines the XR
    metadata applicable to the object, and, if applicable, adds a XR
    metadata extension header into the object header.
 
+
+
+
+de Foy, et al.            Expires 10 April 2025                 [Page 8]
+
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
+
+
 4.  IANA considerations
 
    TBD: registrations of the xr-metadata header extension and XR-
    PARAMETER setup parameter.
-
-
-
-
-de Foy, et al.            Expires 21 March 2025                 [Page 8]
-
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
-
 
 5.  Security Considerations
 
@@ -478,9 +483,9 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
    [I-D.draft-ietf-moq-transport]
               Curley, L., Pugin, K., Nandakumar, S., Vasiliev, V., and
               I. Swett, "Media over QUIC Transport", Work in Progress,
-              Internet-Draft, draft-ietf-moq-transport-05, 8 July 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-moq-
-              transport-05>.
+              Internet-Draft, draft-ietf-moq-transport-06, 19 September
+              2024, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              moq-transport-06>.
 
    [TR23.700-70]
               3GPP, "Study on architecture enhancement for Extended
@@ -496,14 +501,9 @@ Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
 
 
 
-
-
-
-
-
-de Foy, et al.            Expires 21 March 2025                 [Page 9]
+de Foy, et al.            Expires 10 April 2025                 [Page 9]
 
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
 
 
 Appendix A.  XR RTP Header Extension for XR Traffic Handling in 5G
@@ -557,9 +557,9 @@ A.1.  Release 18 XR Metadata
 
 
 
-de Foy, et al.            Expires 21 March 2025                [Page 10]
+de Foy, et al.            Expires 10 April 2025                [Page 10]
 
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
 
 
    NOTE: A receiver may use the RTP packet sequence number together with
@@ -613,9 +613,9 @@ A.2.  Release 19 XR Metadata
 
 
 
-de Foy, et al.            Expires 21 March 2025                [Page 11]
+de Foy, et al.            Expires 10 April 2025                [Page 11]
 
-Internet-Draft            MOQ-EXT-NET-HANDLING            September 2024
+Internet-Draft            MOQ-EXT-NET-HANDLING              October 2024
 
 
 Authors' Addresses
@@ -669,4 +669,4 @@ Authors' Addresses
 
 
 
-de Foy, et al.            Expires 21 March 2025                [Page 12]
+de Foy, et al.            Expires 10 April 2025                [Page 12]
