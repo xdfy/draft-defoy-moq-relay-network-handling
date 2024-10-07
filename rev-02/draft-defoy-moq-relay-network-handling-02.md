@@ -71,7 +71,7 @@ This document describes a mechanism to convey information about media frames. Th
 
 # Introduction
 
-Wireless networks can be a challenging environment for applications with high-throughput and low latency requirements, such as video conferencing and Extended Reality (XR, presented for example in {{I-D.draft-ietf-mops-ar-use-case}}). Wireless networks implement techniques to improve network capacity and energy efficiency, as well as reduce the impact of packet losses on users' quality of experience ({{intro-1-1}}). An extension to the RTP protocol has been defined, which enables metadata associated with application data units to be identified at the ingress point of the wireless network ({{intro-1-2}}). To enable a similar operation with the MoQ protocol {{I-D.draft-ietf-moq-transport}}, this document describes how a MoQ relay can be used at the ingress point of the wireless network ({{intro-1-3}}).
+Wireless networks can be a challenging environment for applications with high-throughput and low latency requirements, such as video conferencing and Extended Reality (XR, presented for example in {{I-D.draft-ietf-mops-ar-use-case}}). Wireless networks implement techniques to improve network capacity and energy efficiency, as well as reduce the impact of packet losses on users' quality of experience ({{intro-1-1}}). An extension to the RTP protocol {{TS26.522}} has been defined, which enables metadata associated with application data units to be identified at the ingress point of the wireless network ({{intro-1-2}}). To enable a similar operation with the MoQ protocol {{I-D.draft-ietf-moq-transport}}, this document describes how a MoQ relay can be used at the ingress point of the wireless network ({{intro-1-3}}).
 
 The rest of this document is structured as follows:
 
@@ -138,15 +138,15 @@ In MOQT, XR metadata is transmitted in object headers. This document describes X
 *NOTE: a MOQT extension mechanism is currently being defined in <https://github.com/moq-wg/moq-transport/pull/502/files>. This document follows this mechanism and might need be updated to use the final mechanism, once published.*
 
 
-### Signalling of XR Metadata Support
+### Signalling of XR Metadata Support {#signalling}
 
-This document registers an integer extension header type named "xr-metadata". 
+This document will register with IANA an integer MoQ Extension Header type named "xr-metadata".
 
-The REQUESTED-EXTENSION parameter (key 0x02), if present in the CLIENT_SETUP and SERVER_SETUP message, will include the varint corresponding to the "xr-metadata" extension header type, if the client and server intend to use the "xr-metadata" extension header.
+The REQUESTED-EXTENSION parameter (key 0x02), if present in the CLIENT_SETUP and SERVER_SETUP message, will include the value corresponding to the "xr-metadata" MoQ extension header type, if the client and server intend to use the "xr-metadata" extension header.
 
-This document registers a setup parameter XR-METADATA, which can be present in the CLIENT_SETUP and SERVER_SETUP to indicate support for specific sets of XR metadata. The XR-METADATA parameter holds a value which is the concatenation of two varints:
+This document will register with IANA a new setup parameter XR-METADATA that is associated with the "xr-metadata" MoQ extension header type. The XR-METADATA parameter indicates the support for specific sets of XR metadata. The XR-METADATA parameter holds a value which is the concatenation of two varints:
 
-The first varint identifies the supported set of XR metadata:
+The first varint, named '3gpp-xr', identifies the supported set of XR metadata:
 
 - 0x00: No XR metadata.
 - 0x01: Release 18 XR metadata.
@@ -154,7 +154,7 @@ The first varint identifies the supported set of XR metadata:
 
 An endpoint may indicate support for both sets of metadata using a value of 0x03.
 
-The second varint identifies optional metadata:
+The second varint, named '3gpp-xr-options', identifies optional metadata:
 
 - 0x00: No optional metadata. This value must be used if the first varint indicates no XR metadata.
 - 0x01: PSSize and NPDS metadata are included. This may be used with Release 18 or 19 XR metadata.
@@ -163,7 +163,7 @@ The client can include an XR-METADATA parameter in CLIENT_SETUP, to request the 
 
 ### XR Metadata in MOQT Datagrams
 
-When using MOQ in datagram mode, the object XR header includes the following fields. 
+When sending MOQ objects in datagrams, the object XR header includes the following fields. 
 
 - When 3gpp-xr bit 0 or 1 is set, the following fields are present in every object.
    - E (1)
@@ -181,7 +181,7 @@ When using MOQ in datagram mode, the object XR header includes the following fie
 
 ### XR Metadata in MOQT Streams
 
-When using MOQT in stream mode, the object XR header includes the following fields.
+When sending MOQ objects in streams, the object XR header includes the following fields.
 
 - When 3gpp-xr bit 0 or 1 is set, the following fields are present in every object.
    - D (1)
@@ -214,7 +214,7 @@ The relay transmits the PDU set XR metadata along with each IP packet, to the ra
 
 To enable XR traffic handling, a MoQ client should set up a MOQT connection through a MoQ relay providing this functionality. Discovery of such relay is out of scope of this document.
 
-Both MoQ server and client exchange setup parameters including REQUESTED-EXTENSION and XR-METADATA, with values indicating the content of the XR metadata extension (section 2.3.1).
+Both MoQ server and client exchange the setup parameter REQUESTED-EXTENSION including a varint indicating usage of the 'xr-metadata' MoQ extension header type, and the setup parameter XR-METADATA with a value indicating the content of the XR metadata extension (as described in {{signalling}}).
 
 Prior to transmitting an object, an endpoint determines the XR metadata applicable to the object, and, if applicable, adds a XR metadata extension header into the object header. 
 
