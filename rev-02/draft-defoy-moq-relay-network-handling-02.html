@@ -11,17 +11,17 @@
 <meta content="
        This document describes a mechanism to convey information about media frames. The information is used for specific handling in functions such as error recovery and congestion handling. These functions can be critical to improve energy efficiency and network capacity in some (especially wireless) networks. Due to end-to-end encryption, MoQ relays are expected to extract the metadata required by these functions. This document aims to enable a level of wireless network support for MoQ equivalent to what is possible for RTP. 
     " name="description">
-<meta content="xml2rfc 3.23.1" name="generator">
+<meta content="xml2rfc 3.23.2" name="generator">
 <meta content="draft-defoy-moq-relay-network-handling-02" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.23.1
+  xml2rfc 3.23.2
     Python 3.10.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.4
     lxml 4.9.4
-    platformdirs 4.3.3
+    platformdirs 4.3.6
     pycountry 24.6.1
     pydyf 0.9.0
     PyYAML 6.0.2
@@ -30,7 +30,7 @@
     wcwidth 0.2.13
     weasyprint 61.2
 -->
-<link href="/usr/src/app/tmp/e60647bf-eb1d-4063-b21b-b5ffce5c832f/draft-defoy-moq-relay-network-handling-02.xml" rel="alternate" type="application/rfc+xml">
+<link href="/usr/src/app/tmp/61497871-91b5-4300-b722-7d135d576c3f/draft-defoy-moq-relay-network-handling-02.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -1213,11 +1213,11 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">MOQ-EXT-NET-HANDLING</td>
-<td class="right">September 2024</td>
+<td class="right">October 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">de Foy, et al.</td>
-<td class="center">Expires 21 March 2025</td>
+<td class="center">Expires 10 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1230,12 +1230,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-defoy-moq-relay-network-handling-02</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-09-17" class="published">17 September 2024</time>
+<time datetime="2024-10-07" class="published">7 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-03-21">21 March 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-10">10 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1276,7 +1276,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 10 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1387,7 +1387,7 @@ li > p:last-of-type:only-child {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">Wireless networks can be a challenging environment for applications with high-throughput and low latency requirements, such as video conferencing and Extended Reality (XR, presented for example in <span>[<a href="#I-D.draft-ietf-mops-ar-use-case" class="cite xref">I-D.draft-ietf-mops-ar-use-case</a>]</span>). Wireless networks implement techniques to improve network capacity and energy efficiency, as well as reduce the impact of packet losses on users' quality of experience (<a href="#intro-1-1" class="auto internal xref">Section 1.1</a>). An extension to the RTP protocol has been defined, which enables metadata associated with application data units to be identified at the ingress point of the wireless network (<a href="#intro-1-2" class="auto internal xref">Section 1.2</a>). To enable a similar operation with the MoQ protocol <span>[<a href="#I-D.draft-ietf-moq-transport" class="cite xref">I-D.draft-ietf-moq-transport</a>]</span>, this document describes how a MoQ relay can be used at the ingress point of the wireless network (<a href="#intro-1-3" class="auto internal xref">Section 1.3</a>).<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">Wireless networks can be a challenging environment for applications with high-throughput and low latency requirements, such as video conferencing and Extended Reality (XR, presented for example in <span>[<a href="#I-D.draft-ietf-mops-ar-use-case" class="cite xref">I-D.draft-ietf-mops-ar-use-case</a>]</span>). Wireless networks implement techniques to improve network capacity and energy efficiency, as well as reduce the impact of packet losses on users' quality of experience (<a href="#intro-1-1" class="auto internal xref">Section 1.1</a>). An extension to the RTP protocol <span>[<a href="#TS26.522" class="cite xref">TS26.522</a>]</span> has been defined, which enables metadata associated with application data units to be identified at the ingress point of the wireless network (<a href="#intro-1-2" class="auto internal xref">Section 1.2</a>). To enable a similar operation with the MoQ protocol <span>[<a href="#I-D.draft-ietf-moq-transport" class="cite xref">I-D.draft-ietf-moq-transport</a>]</span>, this document describes how a MoQ relay can be used at the ingress point of the wireless network (<a href="#intro-1-3" class="auto internal xref">Section 1.3</a>).<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">The rest of this document is structured as follows:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-3.1">
@@ -1507,15 +1507,15 @@ The wireless network performs differentiated handling of groups of data packets.
         </h3>
 <p id="section-2.2-1">In MOQT, XR metadata is transmitted in object headers. This document describes XR metadata in the MOQT protocol, as needed for Release 18 and 19 of 3GPP.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 <p id="section-2.2-2"><em>NOTE: a MOQT extension mechanism is currently being defined in <a href="https://github.com/moq-wg/moq-transport/pull/502/files">https://github.com/moq-wg/moq-transport/pull/502/files</a>. This document follows this mechanism and might need be updated to use the final mechanism, once published.</em><a href="#section-2.2-2" class="pilcrow">¶</a></p>
-<div id="signalling-of-xr-metadata-support">
+<div id="signalling">
 <section id="section-2.2.1">
           <h4 id="name-signalling-of-xr-metadata-s">
 <a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-signalling-of-xr-metadata-s" class="section-name selfRef">Signalling of XR Metadata Support</a>
           </h4>
-<p id="section-2.2.1-1">This document registers an integer extension header type named "xr-metadata".<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-2">The REQUESTED-EXTENSION parameter (key 0x02), if present in the CLIENT_SETUP and SERVER_SETUP message, will include the varint corresponding to the "xr-metadata" extension header type, if the client and server intend to use the "xr-metadata" extension header.<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-3">This document registers a setup parameter XR-METADATA, which can be present in the CLIENT_SETUP and SERVER_SETUP to indicate support for specific sets of XR metadata. The XR-METADATA parameter holds a value which is the concatenation of two varints:<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-4">The first varint identifies the supported set of XR metadata:<a href="#section-2.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-1">This document will register with IANA an integer MoQ Extension Header type named "xr-metadata".<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-2">The REQUESTED-EXTENSION parameter (key 0x02), if present in the CLIENT_SETUP and SERVER_SETUP message, will include the value corresponding to the "xr-metadata" MoQ extension header type, if the client and server intend to use the "xr-metadata" extension header.<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-3">This document will register with IANA a new setup parameter XR-METADATA that is associated with the "xr-metadata" MoQ extension header type. The XR-METADATA parameter indicates the support for specific sets of XR metadata. The XR-METADATA parameter holds a value which is the concatenation of two varints:<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-4">The first varint, named '3gpp-xr', identifies the supported set of XR metadata:<a href="#section-2.2.1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.1-5.1">
               <p id="section-2.2.1-5.1.1">0x00: No XR metadata.<a href="#section-2.2.1-5.1.1" class="pilcrow">¶</a></p>
@@ -1528,7 +1528,7 @@ The wireless network performs differentiated handling of groups of data packets.
 </li>
           </ul>
 <p id="section-2.2.1-6">An endpoint may indicate support for both sets of metadata using a value of 0x03.<a href="#section-2.2.1-6" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-7">The second varint identifies optional metadata:<a href="#section-2.2.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-7">The second varint, named '3gpp-xr-options', identifies optional metadata:<a href="#section-2.2.1-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.1-8.1">
               <p id="section-2.2.1-8.1.1">0x00: No optional metadata. This value must be used if the first varint indicates no XR metadata.<a href="#section-2.2.1-8.1.1" class="pilcrow">¶</a></p>
@@ -1545,7 +1545,7 @@ The wireless network performs differentiated handling of groups of data packets.
           <h4 id="name-xr-metadata-in-moqt-datagra">
 <a href="#section-2.2.2" class="section-number selfRef">2.2.2. </a><a href="#name-xr-metadata-in-moqt-datagra" class="section-name selfRef">XR Metadata in MOQT Datagrams</a>
           </h4>
-<p id="section-2.2.2-1">When using MOQ in datagram mode, the object XR header includes the following fields.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.2-1">When sending MOQ objects in datagrams, the object XR header includes the following fields.<a href="#section-2.2.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.2-2.1">
               <p id="section-2.2.2-2.1.1">When 3gpp-xr bit 0 or 1 is set, the following fields are present in every object.<a href="#section-2.2.2-2.1.1" class="pilcrow">¶</a></p>
@@ -1597,7 +1597,7 @@ The wireless network performs differentiated handling of groups of data packets.
           <h4 id="name-xr-metadata-in-moqt-streams">
 <a href="#section-2.2.3" class="section-number selfRef">2.2.3. </a><a href="#name-xr-metadata-in-moqt-streams" class="section-name selfRef">XR Metadata in MOQT Streams</a>
           </h4>
-<p id="section-2.2.3-1">When using MOQT in stream mode, the object XR header includes the following fields.<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.3-1">When sending MOQ objects in streams, the object XR header includes the following fields.<a href="#section-2.2.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2.3-2.1">
               <p id="section-2.2.3-2.1.1">When 3gpp-xr bit 0 or 1 is set, the following fields are present in every object.<a href="#section-2.2.3-2.1.1" class="pilcrow">¶</a></p>
@@ -1672,7 +1672,7 @@ The wireless network performs differentiated handling of groups of data packets.
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-endpoint-behavior" class="section-name selfRef">Endpoint Behavior</a>
         </h3>
 <p id="section-3.2-1">To enable XR traffic handling, a MoQ client should set up a MOQT connection through a MoQ relay providing this functionality. Discovery of such relay is out of scope of this document.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.2-2">Both MoQ server and client exchange setup parameters including REQUESTED-EXTENSION and XR-METADATA, with values indicating the content of the XR metadata extension (section 2.3.1).<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Both MoQ server and client exchange the setup parameter REQUESTED-EXTENSION including a varint indicating usage of the 'xr-metadata' MoQ extension header type, and the setup parameter XR-METADATA with a value indicating the content of the XR metadata extension (as described in <a href="#signalling" class="auto internal xref">Section 2.2.1</a>).<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 <p id="section-3.2-3">Prior to transmitting an object, an endpoint determines the XR metadata applicable to the object, and, if applicable, adds a XR metadata extension header into the object header.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1714,7 +1714,7 @@ The wireless network performs differentiated handling of groups of data packets.
 <dd class="break"></dd>
 <dt id="I-D.draft-ietf-moq-transport">[I-D.draft-ietf-moq-transport]</dt>
       <dd>
-<span class="refAuthor">Curley, L.</span>, <span class="refAuthor">Pugin, K.</span>, <span class="refAuthor">Nandakumar, S.</span>, <span class="refAuthor">Vasiliev, V.</span>, and <span class="refAuthor">I. Swett</span>, <span class="refTitle">"Media over QUIC Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-moq-transport-05</span>, <time datetime="2024-07-08" class="refDate">8 July 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-05">https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-05</a>&gt;</span>. </dd>
+<span class="refAuthor">Curley, L.</span>, <span class="refAuthor">Pugin, K.</span>, <span class="refAuthor">Nandakumar, S.</span>, <span class="refAuthor">Vasiliev, V.</span>, and <span class="refAuthor">I. Swett</span>, <span class="refTitle">"Media over QUIC Transport"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-moq-transport-06</span>, <time datetime="2024-09-19" class="refDate">19 September 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-06">https://datatracker.ietf.org/doc/html/draft-ietf-moq-transport-06</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="TR23.700-70">[TR23.700-70]</dt>
       <dd>
